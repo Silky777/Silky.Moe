@@ -1,0 +1,42 @@
+---
+const text = "★ welcome to silky.moe ★ under construction forever ★ best viewed at 2am ★ made with love ★ you are valid ★ the web is yours ★ ";
+const repeated = text.repeat(4);
+---
+
+<div class="marquee">
+  <div class="marquee-inner">
+    <span>{repeated}</span>
+    <span aria-hidden="true">{repeated}</span>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    padding: 0.65rem 0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .marquee-inner {
+    display: inline-flex;
+    animation: scroll-left 40s linear infinite;
+  }
+
+  .marquee-inner span {
+    flex-shrink: 0;
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

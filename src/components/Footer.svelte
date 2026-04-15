@@ -1,20 +1,66 @@
-<footer id="contact">
+<footer id="guestbook">
+  <!-- webring -->
+  <div class="webring">
+    <a href="#" class="ring-link">← prev</a>
+    <span class="ring-name">✦ webring ✦</span>
+    <a href="#" class="ring-link">next →</a>
+  </div>
+
   <div class="container">
-    <h2>Get in Touch</h2>
-    <p>Feel free to reach out if you'd like to collaborate or just say hello.</p>
     <div class="links">
-      <a href="mailto:hello@silky.moe">Email</a>
-      <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:hello@silky.moe">✉ email</a>
+      <a href="https://github.com/Silky777" target="_blank" rel="noopener noreferrer">⌘ github</a>
     </div>
-    <p class="copy">&copy; {new Date().getFullYear()} Silky.Moe. All rights reserved.</p>
+
+    <div class="status-bar">
+      <span>silky.moe</span>
+      <span>·</span>
+      <span>made with ♡ and too much coffee</span>
+      <span>·</span>
+      <span><a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener noreferrer">AGPLv3.0</a></span>
+    </div>
+
+    <p class="visitor">
+      you are visitor #<span class="counter">???</span> — thanks for stopping by!
+    </p>
   </div>
 </footer>
 
 <style>
   footer {
-    padding: 6rem 2rem 3rem;
+    padding: 3rem 1.5rem 2rem;
     text-align: center;
-    border-top: 1px solid var(--surface-border);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+
+  .webring {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 2px dashed var(--surface-border);
+    border-radius: 2px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ring-link {
+    color: var(--cyan);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .ring-link:hover {
+    color: var(--pink);
+    text-decoration: underline wavy;
+  }
+
+  .ring-name {
+    color: var(--yellow);
   }
 
   .container {
@@ -22,45 +68,55 @@
     margin: 0 auto;
   }
 
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
   .links {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .links a {
     color: var(--text-secondary);
     text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.5rem 1.25rem;
-    border: 1px solid var(--surface-border);
-    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    border: 1px dashed var(--surface-border);
+    border-radius: 2px;
     transition: border-color 0.2s, color 0.2s;
   }
 
   .links a:hover {
-    color: var(--accent);
-    border-color: var(--accent);
+    color: var(--pink);
+    border-color: var(--pink);
   }
 
-  .copy {
-    margin-top: 3rem;
-    font-size: 0.85rem;
+  .status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
     color: var(--text-muted);
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    margin-bottom: 1.5rem;
+  }
+
+  .status-bar a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    transition: color 0.15s;
+  }
+
+  .status-bar a:hover {
+    color: var(--green);
+  }
+
+  .visitor {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .counter {
+    color: var(--green);
   }
 </style>

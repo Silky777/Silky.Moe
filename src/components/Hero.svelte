@@ -1,15 +1,48 @@
+<script>
+  import { onMount } from "svelte";
+
+  const phrases = ["builds things", "breaks things", "makes websites", "loves the web", "is online"];
+  let index = $state(0);
+  let visible = $state(true);
+
+  onMount(() => {
+    const interval = setInterval(() => {
+      visible = false;
+      setTimeout(() => {
+        index = (index + 1) % phrases.length;
+        visible = true;
+      }, 300);
+    }, 2500);
+    return () => clearInterval(interval);
+  });
+</script>
+
 <section class="hero">
-  <div class="content">
-    <p class="greeting">Hi, I'm</p>
-    <h1>Silky</h1>
-    <p class="tagline">Developer & Creator</p>
-    <p class="description">
-      I build things for the web and beyond. Welcome to my corner of the internet.
-    </p>
-    <div class="cta">
-      <a href="#projects" class="btn primary">View Projects</a>
-      <a href="#contact" class="btn secondary">Get in Touch</a>
-    </div>
+  <div class="ascii-border">
+    <pre class="ascii" aria-hidden="true">
+  ┌──────────────────────────────────┐
+  │  ★  welcome to my corner  ★     │
+  │      of the internet            │
+  └──────────────────────────────────┘
+    </pre>
+  </div>
+
+  <h1>
+    <span class="name">Silky</span><span class="dot">.</span><span class="ext">Moe</span>
+  </h1>
+
+  <p class="rotating">
+    who <span class="phrase" class:visible>{phrases[index]}</span>
+  </p>
+
+  <div class="badges">
+    <span class="badge pink">♡ made with love</span>
+    <span class="badge cyan">☆ best viewed at 2am</span>
+    <span class="badge yellow">✦ under construction forever</span>
+  </div>
+
+  <div class="arrows">
+    <a href="#stuff">↓ go explore ↓</a>
   </div>
 </section>
 
@@ -17,115 +50,111 @@
   .hero {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 6rem 2rem 4rem;
-    position: relative;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .ascii-border {
     overflow: hidden;
   }
 
-  .hero::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-      circle at 30% 40%,
-      rgba(109, 40, 217, 0.12) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 70% 60%,
-      rgba(59, 130, 246, 0.08) 0%,
-      transparent 50%
-    );
-    animation: drift 20s ease-in-out infinite alternate;
-  }
-
-  @keyframes drift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(-5%, 3%); }
-  }
-
-  .content {
-    position: relative;
-    max-width: 700px;
-    text-align: center;
-  }
-
-  .greeting {
-    font-size: 1.1rem;
-    color: var(--accent);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+  .ascii {
+    font-family: var(--mono);
+    font-size: clamp(0.55rem, 1.8vw, 0.85rem);
+    color: var(--text-muted);
+    line-height: 1.4;
+    white-space: pre;
   }
 
   h1 {
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin: 0;
-    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: var(--mono);
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
-  .tagline {
-    font-size: clamp(1.2rem, 3vw, 1.6rem);
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-    font-weight: 500;
+  .name {
+    color: var(--pink);
   }
 
-  .description {
+  .dot {
     color: var(--text-muted);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 500px;
-    margin: 1.5rem auto;
   }
 
-  .cta {
+  .ext {
+    color: var(--cyan);
+  }
+
+  .rotating {
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+
+  .phrase {
+    display: inline-block;
+    color: var(--yellow);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .phrase.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .badges {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
     flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 0.5rem;
   }
 
-  .btn {
-    padding: 0.75rem 1.75rem;
-    border-radius: 8px;
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px dashed;
+    border-radius: 2px;
+  }
+
+  .badge.pink {
+    color: var(--pink);
+    border-color: var(--pink);
+  }
+
+  .badge.cyan {
+    color: var(--cyan);
+    border-color: var(--cyan);
+  }
+
+  .badge.yellow {
+    color: var(--yellow);
+    border-color: var(--yellow);
+  }
+
+  .arrows {
+    margin-top: 2rem;
+  }
+
+  .arrows a {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
+    animation: bounce 2s infinite;
+    display: inline-block;
   }
 
-  .btn:hover {
-    transform: translateY(-2px);
-  }
-
-  .btn.primary {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 4px 20px rgba(109, 40, 217, 0.4);
-  }
-
-  .btn.primary:hover {
-    box-shadow: 0 6px 30px rgba(109, 40, 217, 0.6);
-  }
-
-  .btn.secondary {
-    border: 2px solid var(--surface-border);
-    color: var(--text);
-  }
-
-  .btn.secondary:hover {
-    border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(109, 40, 217, 0.15);
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
   }
 </style>

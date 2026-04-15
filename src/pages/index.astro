@@ -2,17 +2,19 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.svelte";
 import Hero from "../components/Hero.svelte";
+import Marquee from "../components/Marquee.astro";
 import About from "../components/About.svelte";
 import Projects from "../components/Projects.svelte";
 import Footer from "../components/Footer.svelte";
 ---
 
-<Layout title="Silky.Moe — Portfolio">
+<Layout title="~ silky.moe ~">
   <Header client:load />
   <main>
-    <Hero />
-    <About />
+    <Hero client:load />
+    <Marquee />
     <Projects />
+    <About />
   </main>
   <Footer />
 </Layout>

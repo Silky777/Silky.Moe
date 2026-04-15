@@ -1,146 +1,120 @@
 <script>
-  const projects = [
+  const stuff = [
     {
-      title: "Project One",
-      description: "A brief description of your first project. What it does and what tech it uses.",
-      tags: ["Svelte", "TypeScript"],
-      link: "#",
-      repo: "#",
+      title: "this website",
+      description: "you're looking at it! built with astro + svelte. source is on github.",
+      vibe: "✦",
+      color: "pink",
+      link: "https://github.com/",
     },
     {
-      title: "Project Two",
-      description: "A brief description of your second project. Highlight the key features.",
-      tags: ["Astro", "CSS"],
+      title: "project two",
+      description: "something cool you made. describe it however you want.",
+      vibe: "☆",
+      color: "cyan",
       link: "#",
-      repo: "#",
     },
     {
-      title: "Project Three",
-      description: "A brief description of your third project. What problem does it solve?",
-      tags: ["Node.js", "API"],
+      title: "project three",
+      description: "another thing. maybe it's weird. that's fine.",
+      vibe: "♡",
+      color: "yellow",
       link: "#",
-      repo: "#",
+    },
+    {
+      title: "project four",
+      description: "you get the idea. add as many as you want.",
+      vibe: "◇",
+      color: "green",
+      link: "#",
     },
   ];
 </script>
 
-<section id="projects" class="projects">
+<section id="stuff" class="stuff">
   <div class="container">
-    <h2>Projects</h2>
+    <h2>/* stuff i made */</h2>
     <div class="grid">
-      {#each projects as project}
-        <article class="card">
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-          <div class="tags">
-            {#each project.tags as tag}
-              <span class="tag">{tag}</span>
-            {/each}
-          </div>
-          <div class="links">
-            <a href={project.link} target="_blank" rel="noopener noreferrer">Live Demo</a>
-            <a href={project.repo} target="_blank" rel="noopener noreferrer">Source</a>
-          </div>
-        </article>
+      {#each stuff as item}
+        <a href={item.link} class="card {item.color}" target="_blank" rel="noopener noreferrer">
+          <span class="vibe">{item.vibe}</span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </a>
       {/each}
     </div>
   </div>
 </section>
 
 <style>
-  .projects {
-    padding: 6rem 2rem;
+  .stuff {
+    padding: 5rem 1.5rem;
   }
 
   .container {
-    max-width: 1000px;
+    max-width: 800px;
     margin: 0 auto;
   }
 
   h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2.5rem;
-    color: var(--text);
-    position: relative;
-    display: inline-block;
-  }
-
-  h2::after {
-    content: "";
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--accent);
-    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    color: var(--green);
+    margin-bottom: 2rem;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   .card {
-    background: var(--surface);
-    border: 1px solid var(--surface-border);
-    border-radius: 12px;
-    padding: 1.75rem;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border: 1px dashed var(--surface-border);
+    border-radius: 2px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+    display: block;
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent);
+    transform: translateY(-3px);
   }
 
+  .card.pink:hover { border-color: var(--pink); }
+  .card.cyan:hover { border-color: var(--cyan); }
+  .card.yellow:hover { border-color: var(--yellow); }
+  .card.green:hover { border-color: var(--green); }
+
+  .vibe {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .card.pink .vibe { color: var(--pink); }
+  .card.cyan .vibe { color: var(--cyan); }
+  .card.yellow .vibe { color: var(--yellow); }
+  .card.green .vibe { color: var(--green); }
+
   h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 1rem;
     color: var(--text);
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.5rem;
   }
 
   p {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0 0 1rem;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .tag {
-    background: rgba(109, 40, 217, 0.15);
-    color: var(--accent-light);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-
-  .links {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .links a {
-    color: var(--text-secondary);
-    text-decoration: none;
     font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.2s;
+    line-height: 1.6;
+    margin: 0;
   }
 
-  .links a:hover {
-    color: var(--accent);
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
