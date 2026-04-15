@@ -18,13 +18,9 @@
 </script>
 
 <section class="hero">
-  <div class="ascii-border">
-    <pre class="ascii" aria-hidden="true">
-  ┌──────────────────────────────────┐
-  │  ★  welcome to my corner  ★     │
-  │      of the internet            │
-  └──────────────────────────────────┘
-    </pre>
+  <div class="welcome-box">
+    <p>* welcome to my corner *</p>
+    <p>of the internet</p>
   </div>
 
   <h1>
@@ -58,16 +54,13 @@
     gap: 1.5rem;
   }
 
-  .ascii-border {
-    overflow: hidden;
-  }
-
-  .ascii {
+  .welcome-box {
+    border: 1px dashed var(--text-muted);
+    padding: 1rem 2rem;
     font-family: var(--mono);
-    font-size: clamp(0.55rem, 1.8vw, 0.85rem);
+    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
     color: var(--text-muted);
-    line-height: 1.4;
-    white-space: pre;
+    line-height: 1.6;
   }
 
   h1 {
@@ -94,14 +87,15 @@
     font-family: var(--mono);
     font-size: 1.2rem;
     color: var(--text-secondary);
+    transition: all 0.3s ease;
   }
 
   .phrase {
     display: inline-block;
     color: var(--yellow);
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
   .phrase.visible {
