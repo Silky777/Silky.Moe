@@ -3,18 +3,18 @@
 
   const lines = [
     { text: "> [SYS_INIT] Initializing environment...", delay: 0 },
-    { text: "> [OK] Kernel modules loaded.", delay: 400 },
-    { text: "> [OK] Memory allocation successful.", delay: 700 },
-    { text: "> [OK] Connecting to main grid...", delay: 1100 },
-    { text: "> [OK] Secure channel established.", delay: 1600 },
-    { text: "> [OK] Filesystem mounted: /home/silky", delay: 2000 },
-    { text: "", delay: 2400 },
-    { text: "SYSTEM DIRECTORY OVERRIDE ACTIVE", type: "header", delay: 2600 },
-    { text: "> Welcome to the main console.", delay: 3100 },
-    { text: "> Type a directory from the sidebar to navigate.", delay: 3500 },
-    { text: "> Last login: " + new Date().toUTCString(), delay: 3900 },
-    { text: "", delay: 4200 },
-    { text: "> Awaiting input...", type: "prompt", delay: 4400 },
+    { text: "> [OK] Kernel modules loaded.", delay: 100 },
+    { text: "> [OK] Memory allocation successful.", delay: 200 },
+    { text: "> [OK] Connecting to main grid...", delay: 350 },
+    { text: "> [OK] Secure channel established.", delay: 500 },
+    { text: "> [OK] Filesystem mounted: /home/silky", delay: 650 },
+    { text: "", delay: 800 },
+    { text: "SYSTEM DIRECTORY OVERRIDE ACTIVE", type: "header", delay: 900 },
+    { text: "> Welcome to the main console.", delay: 1050 },
+    { text: "> Type a directory from the sidebar to navigate.", delay: 1200 },
+    { text: "> Last login: " + new Date().toUTCString(), delay: 1350 },
+    { text: "", delay: 1450 },
+    { text: "> Awaiting input...", type: "prompt", delay: 1550 },
   ];
 
   let visibleCount = $state(0);

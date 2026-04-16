@@ -22,13 +22,21 @@
 
   async function fetchHits() {
     try {
-      const res = await fetch(`${GC_HOST}/counter/${encodeURIComponent("/")}.json`);
+      const res = await fetch(`${GC_HOST}/counter/%2F.json`);
       if (res.ok) {
         const data = await res.json();
         totalHits = data.count_unique ?? data.count ?? "---";
+      } else {
+        const res2 = await fetch(`${GC_HOST}/counter//.json`);
+        if (res2.ok) {
+          const data = await res2.json();
+          totalHits = data.count_unique ?? data.count ?? "---";
+        } else {
+          totalHits = "---";
+        }
       }
     } catch {
-      totalHits = "ERR";
+      totalHits = "---";
     }
   }
 
