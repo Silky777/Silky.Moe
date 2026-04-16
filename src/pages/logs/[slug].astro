@@ -1,0 +1,14 @@
+---
+import Terminal from '../../layouts/Terminal.astro';
+
+export function getStaticPaths() {
+  return [];
+}
+
+const { slug } = Astro.params;
+---
+
+<Terminal title={`~/logs/${slug}`}>
+  <p>> Retrieving log entry: {slug}</p>
+  <p>> [PENDING] No data available yet.</p>
+</Terminal>

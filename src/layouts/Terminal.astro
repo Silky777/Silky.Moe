@@ -1,0 +1,71 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+import SysNav from '../components/SysNav.svelte';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Personal architecture and data logs." />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ViewTransitions />
+		<script data-goatcounter="https://silkymoe.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+	</head>
+	<body>
+		<div class="terminal-grid">
+			<aside class="sidebar">
+				<SysNav client:load />
+			</aside>
+			<main class="data-feed">
+				<slot />
+			</main>
+		</div>
+	</body>
+</html>
+
+<style>
+	.terminal-grid {
+		display: grid;
+		grid-template-columns: 300px 1fr;
+		min-height: 100vh;
+		padding: 2rem;
+		gap: 2rem;
+		max-width: 1400px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 10; /* Keeps it under the scanlines */
+	}
+
+	.sidebar {
+		border-right: 1px solid var(--phosphor);
+		padding-right: 1rem;
+	}
+
+	.data-feed {
+		padding-left: 1rem;
+	}
+
+	/* Responsive snap for mobile */
+	@media (max-width: 768px) {
+		.terminal-grid {
+			grid-template-columns: 1fr;
+			grid-template-rows: auto 1fr;
+		}
+		.sidebar {
+			border-right: none;
+			border-bottom: 1px solid var(--phosphor);
+			padding-bottom: 1rem;
+		}
+	}
+</style>

@@ -1,97 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;1,9..40,400&display=swap');
-
 :root {
-  --bg: #0a0a0f;
-  --surface: #13131f;
-  --surface-border: #2e2e4a;
-  --text: #e8e8f0;
-  --text-secondary: #a0a0be;
-  --text-muted: #606080;
-  --pink: #ff6ec7;
-  --cyan: #00f0ff;
-  --yellow: #ffe156;
-  --green: #39ff14;
-  --purple: #b388ff;
-  --orange: #ff7849;
-  --mono: "Space Mono", monospace;
-  --sans: "DM Sans", system-ui, sans-serif;
+  --bg-color: #0a0805;
+  --phosphor: #ffb000;
+  --glow: 0 0 3px rgba(255, 176, 0, 0.9),
+    0 0 10px rgba(255, 176, 0, 0.6),
+    0 0 20px rgba(255, 176, 0, 0.3);
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 }
 
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 60px;
 }
 
 body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-color);
+  color: var(--phosphor);
+  font-family: var(--font-mono);
+  text-shadow: var(--glow);
+  margin: 0;
+  min-height: 100vh;
   overflow-x: hidden;
+  line-height: 1.4;
 }
 
-::selection {
-  background: var(--pink);
-  color: #000;
-}
-
-a {
-  color: inherit;
-}
-
-/* Shared utility: dashed border boxes */
-.boxy {
-  border: 2px dashed var(--surface-border);
-  border-radius: 4px;
-  padding: 1.5rem;
-  transition: border-color 0.2s;
-}
-
-.boxy:hover {
-  border-color: var(--pink);
-}
-
-/* Marquee banner */
-.marquee {
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 1px solid var(--surface-border);
-  border-bottom: 1px solid var(--surface-border);
-  padding: 0.6rem 0;
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.marquee-inner {
-  display: inline-block;
-  animation: scroll-left 30s linear infinite;
-}
-
-@keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Star cursor trail — opt-in via JS */
-.star {
+/* The Scanline Overlay */
+body::before {
+  content: "";
+  display: block;
   position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(to bottom,
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 50;
   pointer-events: none;
-  font-size: 14px;
-  z-index: 9999;
-  animation: star-fade 0.8s forwards;
 }
 
-@keyframes star-fade {
-  0% { opacity: 1; transform: scale(1) translateY(0); }
-  100% { opacity: 0; transform: scale(0.3) translateY(-30px); }
+/* The CRT Curve (Vignette) */
+body::after {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+  z-index: 51;
+  pointer-events: none;
+}
+
+/* Baseline Link Reset */
+a {
+  color: var(--phosphor);
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: var(--phosphor);
+  color: var(--bg-color);
+  text-shadow: none;
+  /* Kills the glow when inverted for crispness */
+}
+
+/* Subtle screen flicker */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  96% { opacity: 0.9; }
+  97% { opacity: 1; }
+}
+
+body {
+  animation: flicker 8s infinite;
+}
+
+/* Horizontal rule styling */
+hr {
+  border: none;
+  border-top: 1px dashed var(--phosphor);
+  opacity: 0.4;
+  margin: 1.5rem 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--phosphor);
+  opacity: 0.5;
+}
+
+/* Selection */
+::selection {
+  background: var(--phosphor);
+  color: var(--bg-color);
+  text-shadow: none;
 }
