@@ -22,7 +22,6 @@ body {
   line-height: 1.4;
 }
 
-/* The Scanline Overlay */
 body::before {
   content: "";
   display: block;
@@ -39,7 +38,6 @@ body::before {
   pointer-events: none;
 }
 
-/* The CRT Curve (Vignette) */
 body::after {
   content: "";
   display: block;
@@ -53,7 +51,6 @@ body::after {
   pointer-events: none;
 }
 
-/* Baseline Link Reset */
 a {
   color: var(--phosphor);
   text-decoration: none;
@@ -63,10 +60,8 @@ a:hover {
   background-color: var(--phosphor);
   color: var(--bg-color);
   text-shadow: none;
-  /* Kills the glow when inverted for crispness */
 }
 
-/* Subtle screen flicker */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
   92% { opacity: 1; }
@@ -80,7 +75,6 @@ body {
   animation: flicker 8s infinite;
 }
 
-/* Horizontal rule styling */
 hr {
   border: none;
   border-top: 1px dashed var(--phosphor);
@@ -88,7 +82,6 @@ hr {
   margin: 1.5rem 0;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -102,7 +95,6 @@ hr {
   opacity: 0.5;
 }
 
-/* Selection */
 ::selection {
   background: var(--phosphor);
   color: var(--bg-color);

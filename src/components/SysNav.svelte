@@ -3,11 +3,8 @@
 
   let clock = $state("00:00:00");
   let uptime = $state("0d 0h 0m");
-  let totalHits = $state("---");
 
-  // Site "deployed" epoch — adjust to your actual deploy date
-  const DEPLOY_EPOCH = new Date("2026-04-15T00:00:00Z").getTime();
-  const GC_HOST = "https://silkymoe.goatcounter.com";
+  const DEPLOY_EPOCH = new Date("2026-04-15T16:23:00Z").getTime();
 
   function tick() {
     const now = new Date();
@@ -20,29 +17,21 @@
     uptime = `${days}d ${hrs}h ${mins}m`;
   }
 
-  async function fetchHits() {
-    try {
-      const res = await fetch(`${GC_HOST}/counter/%2F.json`);
-      if (res.ok) {
-        const data = await res.json();
-        totalHits = data.count_unique ?? data.count ?? "---";
-      } else {
-        const res2 = await fetch(`${GC_HOST}/counter//.json`);
-        if (res2.ok) {
-          const data = await res2.json();
-          totalHits = data.count_unique ?? data.count ?? "---";
-        } else {
-          totalHits = "---";
-        }
+  function loadVisitCount() {
+    // Wait for GoatCounter script to load, then inject count
+    const check = setInterval(() => {
+      if (window.goatcounter?.visit_count) {
+        clearInterval(check);
+        window.goatcounter.visit_count({ append: "#gc-count" });
       }
-    } catch {
-      totalHits = "---";
-    }
+    }, 200);
+    // Stop checking after 10s
+    setTimeout(() => clearInterval(check), 10000);
   }
 
   onMount(() => {
     tick();
-    fetchHits();
+    loadVisitCount();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   });
@@ -65,6 +54,7 @@
   <nav class="directory-list">
     <ul>
       <li><a href="/">./root</a></li>
+      <li><a href="/about">./about_me</a></li>
       <li><a href="/logs">./system_logs/</a></li>
       <li><a href="/infrastructure">./infrastructure/</a></li>
       <li><a href="/media">./media_cache/</a></li>
@@ -76,7 +66,7 @@
     <p>> SYS_CLOCK: <span class="val">{clock}</span></p>
     <p>> UPTIME: <span class="val">{uptime}</span></p>
     <p>> LOAD_AVG: <span class="val">0.42 0.37 0.31</span></p>
-    <p>> SESSIONS: <span class="val">1 active</span> (<span class="val">{totalHits}</span> historic)</p>
+    <p>> SESSIONS: <span class="val">1 active</span> (<span class="val" id="gc-count">---</span> historic)</p>
   </div>
 </div>
 

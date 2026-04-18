@@ -1,0 +1,130 @@
+---
+import Terminal from '../layouts/Terminal.astro';
+---
+
+<Terminal title="~/about_me">
+	<div class="about">
+		<p class="label">> cat /etc/about_me</p>
+
+		<div class="block">
+			<p>23. Australian American. Generalized IT — jack of all trades, master of none, but often better than a master of one.</p>
+		</div>
+
+		<div class="block">
+			<p class="label">> BACKGROUND:</p>
+			<p>I've worn a lot of hats — network engineering, systems work, desktop support, Discord bot dev. Programming languages are just different syntax over the same paradigms; read the docs, understand the logic, and you can build in anything.</p>
+			<p>THINK ABOUT ACCESSIBILITY.</p>
+		</div>
+
+		<div class="block">
+			<p class="label">> INTERESTS:</p>
+			<ul>
+				<li>Amateur meteorology</li>
+				<li>Anime & manga</li>
+				<li>Logical, efficient solutions to everything</li>
+			</ul>
+		</div>
+
+		<div class="block">
+			<p class="label">> PROJECTS:</p>
+			<ul>
+				<li><span class="highlight">silky.moe</span> — this site</li>
+				<li><span class="highlight">CeciliaBot</span> — local LLM hooked into Discord with limited memory</li>
+			</ul>
+		</div>
+
+		<div class="block">
+			<p class="label">> CONTACT:</p>
+			<ul>
+				<li><a href="https://github.com/Silky777" target="_blank" rel="noopener">GitHub: Silky777</a></li>
+				<li>Discord: silkyren</li>
+				<li>Fluxer: silkyren#0197</li>
+			</ul>
+		</div>
+
+		<div class="block">
+			<p class="label">> PGP FINGERPRINT:</p>
+			<p class="fingerprint">968F 9FE9 CA23 9F0B 3E0E  4F5D C4E8 8EF0 AACB BFDB</p>
+			<p class="dim">↳ <a href="/pgp_public.asc" target="_blank">export public_key.asc</a></p>
+		</div>
+
+		<p class="prompt">guest@sys:~$ <span class="blink">_</span></p>
+	</div>
+</Terminal>
+
+<style>
+	.about {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.block {
+		border-left: 2px solid var(--phosphor);
+		padding-left: 1rem;
+	}
+
+	.label {
+		margin: 0 0 0.25rem;
+		opacity: 0.7;
+		font-size: 0.85rem;
+	}
+
+	.dim {
+		opacity: 0.5;
+		font-size: 0.85rem;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0.25rem 0 0;
+	}
+
+	li::before {
+		content: "├─ ";
+		opacity: 0.4;
+	}
+
+	li:last-child::before {
+		content: "└─ ";
+		opacity: 0.4;
+	}
+
+	.highlight {
+		color: var(--phosphor);
+		text-shadow: 0 0 8px var(--phosphor);
+	}
+
+	.fingerprint {
+		font-size: 0.9rem;
+		letter-spacing: 0.05em;
+		margin: 0.25rem 0 0;
+		opacity: 0.9;
+	}
+
+	a {
+		color: var(--phosphor);
+		text-decoration: none;
+		border-bottom: 1px dashed var(--phosphor);
+	}
+
+	a:hover {
+		background: var(--phosphor);
+		color: var(--bg-color);
+		text-shadow: none;
+	}
+
+	.prompt {
+		margin-top: 1rem;
+		opacity: 0.6;
+	}
+
+	.blink {
+		animation: blink 1s step-end infinite;
+	}
+
+	@keyframes blink {
+		50% { opacity: 0; }
+	}
+</style>
