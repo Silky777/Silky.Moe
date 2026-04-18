@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import { execSync } from 'child_process';
 import '../styles/global.css';
 import SysNav from '../components/SysNav.svelte';
 
@@ -8,6 +9,11 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+let commitCount = '0';
+try {
+	commitCount = execSync('git rev-list --count HEAD').toString().trim();
+} catch {}
 ---
 
 <!doctype html>
@@ -25,7 +31,7 @@ const { title } = Astro.props;
 	<body>
 		<div class="terminal-grid">
 			<aside class="sidebar">
-				<SysNav client:load />
+				<SysNav client:load version={commitCount} />
 			</aside>
 			<main class="data-feed">
 				<slot />

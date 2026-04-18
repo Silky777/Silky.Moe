@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
 
+  let { version = "0" } = $props();
+
   let clock = $state("00:00:00");
   let uptime = $state("0d 0h 0m");
   let totalHits = $state("---");
@@ -41,6 +43,7 @@
 <div class="nav-container">
   <div class="sys-header">
     <h1><span class="user">guest@sys</span>:<span class="path">~</span>$ cd silky.moe<span class="cursor">_</span></h1>
+    <p class="version">v{version}</p>
   </div>
 
   <div class="sys-motd">
@@ -87,6 +90,12 @@
 
   .cursor {
     animation: blink 1s step-end infinite;
+  }
+
+  .version {
+    font-size: 0.75rem;
+    opacity: 0.4;
+    margin: 0.25rem 0 0;
   }
 
   .sys-motd {
