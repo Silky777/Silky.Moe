@@ -29,7 +29,7 @@
 <div class="nav-container">
   <div class="sys-header">
     <h1><span class="user">guest@sys</span>:<span class="path">~</span>$ cd silky.moe<span class="cursor">_</span></h1>
-    <p class="version">v{version}</p>
+    <p class="version">v1.{version}</p>
   </div>
 
   <div class="sys-motd">
@@ -80,7 +80,7 @@
 
   .version {
     font-size: 0.75rem;
-    opacity: 0.4;
+    opacity: 0.7;
     margin: 0.25rem 0 0;
   }
 
