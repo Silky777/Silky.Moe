@@ -14,6 +14,15 @@ let commitCount = '0';
 try {
 	commitCount = execSync('git rev-list --count HEAD').toString().trim();
 } catch {}
+
+let visitorCount = '---';
+try {
+	const res = await fetch('https://silkymoe.goatcounter.com/counter/%2F.json');
+	if (res.ok) {
+		const data = await res.json();
+		visitorCount = data.count_unique ?? data.count ?? '---';
+	}
+} catch {}
 ---
 
 <!doctype html>
@@ -31,7 +40,7 @@ try {
 	<body>
 		<div class="terminal-grid">
 			<aside class="sidebar">
-				<SysNav client:load version={commitCount} />
+				<SysNav client:load version={commitCount} hits={visitorCount} />
 			</aside>
 			<main class="data-feed">
 				<slot />
@@ -50,7 +59,7 @@ try {
 		max-width: 1400px;
 		margin: 0 auto;
 		position: relative;
-		z-index: 10; /* Keeps it under the scanlines */
+		z-index: 10;
 	}
 
 	.sidebar {

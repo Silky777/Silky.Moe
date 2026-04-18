@@ -1,11 +1,10 @@
 <script>
   import { onMount } from "svelte";
 
-  let { version = "0" } = $props();
+  let { version = "0", hits = "---" } = $props();
 
   let clock = $state("00:00:00");
   let uptime = $state("0d 0h 0m");
-  let totalHits = $state("---");
 
   const DEPLOY_EPOCH = new Date("2026-04-15T16:23:00Z").getTime();
 
@@ -20,21 +19,8 @@
     uptime = `${days}d ${hrs}h ${mins}m`;
   }
 
-  async function fetchHits() {
-    try {
-      const res = await fetch("https://silkymoe.goatcounter.com/counter/%2F.json");
-      if (res.ok) {
-        const data = await res.json();
-        totalHits = data.count_unique ?? data.count ?? "---";
-      }
-    } catch {
-      totalHits = "---";
-    }
-  }
-
   onMount(() => {
     tick();
-    fetchHits();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   });
@@ -70,7 +56,7 @@
     <p>> SYS_CLOCK: <span class="val">{clock}</span></p>
     <p>> UPTIME: <span class="val">{uptime}</span></p>
     <p>> LOAD_AVG: <span class="val">0.42 0.37 0.31</span></p>
-    <p>> SESSIONS: <span class="val">1 active</span> (<span class="val">{totalHits}</span> historic)</p>
+    <p>> SESSIONS: <span class="val">1 active</span> (<span class="val">{hits}</span> historic)</p>
   </div>
 </div>
 
