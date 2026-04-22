@@ -1,6 +1,6 @@
 ---
 title: "Example Unsigned Post 2 - Fake Signature"
-pubDate: 2026-04-22
+pubDate: 2026-04-22T13:25:00Z
 tags:
   - example
   - unsigned

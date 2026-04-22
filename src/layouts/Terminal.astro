@@ -2,7 +2,7 @@
 import { ViewTransitions } from 'astro:transitions';
 import { execSync } from 'child_process';
 import '../styles/global.css';
-import SysNav from '../components/SysNav.svelte';
+import SysNav from '../components/SysNav.astro';
 
 interface Props {
 	title: string;
@@ -40,7 +40,7 @@ try {
 	<body>
 		<div class="terminal-grid">
 			<aside class="sidebar">
-				<SysNav client:load version={commitCount} hits={visitorCount} />
+				<SysNav version={commitCount} hits={visitorCount} />
 			</aside>
 			<main class="data-feed">
 				<slot />

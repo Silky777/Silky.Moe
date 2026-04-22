@@ -28,7 +28,7 @@ if (!slug) {
   process.exit(1);
 }
 
-const date = new Date().toISOString().slice(0, 10);
+const date = new Date().toISOString();
 const signer = process.env.BLOG_SIGNER || process.env.COMPUTERNAME || 'unknown-signer';
 const fingerprint = process.env.GPG_FINGERPRINT || 'REPLACE_WITH_FINGERPRINT';
 

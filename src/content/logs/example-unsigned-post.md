@@ -1,6 +1,6 @@
 ---
 title: "Example Unsigned Post 1 - Missing Signature"
-pubDate: 2026-04-22
+pubDate: 2026-04-22T13:20:00Z
 tags:
   - example
   - unsigned

@@ -36,6 +36,10 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 	year: 'numeric',
 	month: 'short',
 	day: '2-digit',
+	hour: '2-digit',
+	minute: '2-digit',
+	second: '2-digit',
+	timeZoneName: 'short',
 });
 ---
 
@@ -151,7 +155,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 
 	.status.unsigned {
 		color: #ff7a4a;
-		animation: terminalWarnBlink 1.2s step-end infinite;
+		animation: terminalWarnBlink 1s step-end infinite;
 	}
 
 	@keyframes terminalWarnBlink {
