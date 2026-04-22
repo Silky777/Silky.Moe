@@ -1,14 +1,171 @@
 ---
 import Terminal from '../../layouts/Terminal.astro';
+import { getCollection, render } from 'astro:content';
+import { getSignatureStatus } from '../../lib/signature-status';
 
-export function getStaticPaths() {
-  return [];
+export async function getStaticPaths() {
+  const logs = await getCollection('logs');
+  return logs.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
 }
 
-const { slug } = Astro.params;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const signatureStatus = getSignatureStatus(entry);
+
+const pubDateFmt = new Intl.DateTimeFormat('en-GB', {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+});
+
+const timeFmt = new Intl.DateTimeFormat('en-GB', {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZoneName: 'short',
+});
+
+const signedFileName = entry.data.signature?.signedFile.split('/').pop() ?? '';
+const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?? '';
 ---
 
-<Terminal title={`~/logs/${slug}`}>
-  <p>> Retrieving log entry: {slug}</p>
-  <p>> [PENDING] No data available yet.</p>
+<Terminal title={`~/logs/${entry.slug}`}>
+  <article class="log-entry">
+    <header>
+      <p class="label">&gt; cat /system_logs/{entry.slug}.md</p>
+      <h1>{entry.data.title}</h1>
+      <p class="meta">Published {pubDateFmt.format(entry.data.pubDate)}</p>
+      {entry.data.updatedDate && <p class="meta">Updated {pubDateFmt.format(entry.data.updatedDate)}</p>}
+      {entry.data.tags.length > 0 && <p class="meta">Tags: {entry.data.tags.join(', ')}</p>}
+    </header>
+
+    <div class="content">
+      <Content />
+    </div>
+
+    {
+      entry.data.signature ? (
+        <section class="signature-box">
+            <p class="label">&gt; signature_status: {signatureStatus.label}</p>
+            {signatureStatus.warning && (
+              <p class="sig-warning" role="status">[WARN] {signatureStatus.warning}. Treated as unsigned.</p>
+            )}
+          <p>
+            Fingerprint: <span class="val">{entry.data.signature.fingerprint}</span>
+          </p>
+          <p>
+            Signed: <span class="val">{timeFmt.format(entry.data.signature.signedAt)}</span>
+          </p>
+          <p>
+            Signed source:{' '}
+            <a href={entry.data.signature.signedFile} target="_blank" rel="noopener">
+              {entry.data.signature.signedFile}
+            </a>
+          </p>
+          <p>
+            Detached signature:{' '}
+            <a href={entry.data.signature.signatureFile} target="_blank" rel="noopener">
+              {entry.data.signature.signatureFile}
+            </a>
+          </p>
+          <pre>gpg --import pgp_public.asc
+gpg --verify {signatureFileName} {signedFileName}</pre>
+        </section>
+      ) : (
+        <section class="signature-box">
+          <p class="label">&gt; signature_status: unsigned</p>
+          <p class="meta">This log entry has no detached PGP signature yet.</p>
+        </section>
+      )
+    }
+  </article>
 </Terminal>
+
+<style>
+  .log-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .label {
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  h1 {
+    margin: 0.5rem 0 0.5rem;
+    font-size: 1.6rem;
+  }
+
+  .meta {
+    margin: 0.2rem 0;
+    color: var(--phosphor-dim);
+  }
+
+  .content :global(p) {
+    margin: 0.8rem 0;
+  }
+
+  .content :global(h2),
+  .content :global(h3) {
+    margin-top: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .content :global(code) {
+    border: 1px dashed var(--phosphor);
+    padding: 0.05rem 0.25rem;
+    background: rgba(10, 8, 5, 0.5);
+  }
+
+  .content :global(pre) {
+    border: 1px dashed var(--phosphor);
+    padding: 0.8rem;
+    overflow-x: auto;
+    background: rgba(10, 8, 5, 0.5);
+  }
+
+  .signature-box {
+    border: 1px dashed var(--phosphor);
+    padding: 0.8rem;
+    background: rgba(10, 8, 5, 0.45);
+  }
+
+  .signature-box p {
+    margin: 0.4rem 0;
+  }
+
+  .signature-box pre {
+    margin: 0.8rem 0 0;
+    border: 1px dashed var(--phosphor);
+    padding: 0.7rem;
+    background: rgba(10, 8, 5, 0.6);
+  }
+
+  .sig-warning {
+    color: #ff7a4a;
+    text-transform: uppercase;
+    animation: terminalWarnBlink 1.2s step-end infinite;
+  }
+
+  @keyframes terminalWarnBlink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0.25;
+    }
+  }
+
+  .val {
+    color: var(--phosphor);
+  }
+</style>

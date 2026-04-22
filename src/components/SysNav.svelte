@@ -80,21 +80,13 @@
 
   .version {
     font-size: 0.75rem;
-    opacity: 0.7;
+    color: var(--phosphor-muted);
     margin: 0.25rem 0 0;
   }
 
   .sys-motd {
     font-size: 0.85rem;
-    opacity: 0.85;
-    border: 1px dashed var(--phosphor);
-    padding: 0.75rem;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .sys-motd {
-    font-size: 0.85rem;
-    opacity: 0.85;
+    color: var(--phosphor-muted);
     border: 1px dashed var(--phosphor);
     padding: 0.75rem;
     background-color: rgba(10, 8, 5, 0.6); /* Matches the warmer bg */
@@ -141,7 +133,7 @@
   .sys-status {
     margin-top: auto;
     font-size: 0.75rem;
-    opacity: 0.7;
+    color: var(--phosphor-muted);
     border-top: 1px dashed var(--phosphor);
     padding-top: 1rem;
     display: flex;

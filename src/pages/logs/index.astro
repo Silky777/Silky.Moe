@@ -1,0 +1,177 @@
+---
+import Terminal from '../../layouts/Terminal.astro';
+import { getCollection } from 'astro:content';
+import { getSignatureStatus } from '../../lib/signature-status';
+
+const logs = (await getCollection('logs')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function stripMarkdown(input: string) {
+	return input
+		.replace(/```[\s\S]*?```/g, ' ')
+		.replace(/`([^`]+)`/g, '$1')
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+		.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+		.replace(/^\s{0,3}#{1,6}\s+/gm, '')
+		.replace(/[>*_-]{2,}/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+const logsWithPreview = logs.map((entry) => {
+	const bodyText = stripMarkdown(entry.body || '');
+	const preview = bodyText.length > 210 ? `${bodyText.slice(0, 210).trim()}...` : bodyText;
+	const signatureStatus = getSignatureStatus(entry);
+	return {
+		entry,
+		preview: preview || entry.data.description,
+		signatureStatus,
+	};
+});
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+	year: 'numeric',
+	month: 'short',
+	day: '2-digit',
+});
+---
+
+<Terminal title="~/logs">
+	<section class="logs-feed">
+		<p class="label">&gt; ls -lt /system_logs</p>
+		<p class="dim">Scroll for archive history.</p>
+		<p class="dim">Sign a post with: npm run sign-log -- your-slug</p>
+
+		{
+			logsWithPreview.length === 0 ? (
+				<p class="dim">No log entries yet.</p>
+			) : (
+				<div class="logs-box" role="region" aria-label="System logs archive">
+					<ul>
+						{logsWithPreview.map(({ entry, preview, signatureStatus }) => (
+							<li>
+								<a class="entry-link" href={`/logs/${entry.slug}`}>
+									<span class="entry-title">{entry.data.title}</span>
+									<p class="entry-preview">{preview}</p>
+									<span class="entry-footer">
+										<span>{dateFmt.format(entry.data.pubDate)}</span>
+										<span class={`status ${signatureStatus.label}`}>
+											{signatureStatus.label === 'unsigned' ? '⚠ unsigned' : 'signed'}
+										</span>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			)
+		}
+	</section>
+</Terminal>
+
+<style>
+	.logs-feed {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.label {
+		margin: 0;
+		opacity: 0.75;
+	}
+
+	.dim {
+		margin: 0 0 0.6rem;
+		color: var(--phosphor-dim);
+	}
+
+	.logs-box {
+		max-height: min(70vh, 780px);
+		overflow-y: auto;
+		padding: 0.8rem;
+		border: 1px dashed var(--phosphor);
+		background: rgba(10, 8, 5, 0.5);
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	li {
+		border: 1px solid rgba(255, 176, 0, 0.35);
+		background: rgba(255, 176, 0, 0.04);
+	}
+
+	.entry-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+		padding: 0.9rem;
+		height: 100%;
+	}
+
+	.entry-title {
+		font-size: 1.35rem;
+		line-height: 1.2;
+	}
+
+	.entry-preview {
+		margin: 0;
+		font-size: 0.95rem;
+		line-height: 1.45;
+		color: var(--phosphor-muted);
+		max-width: 76ch;
+	}
+
+	.entry-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.8rem;
+		color: var(--phosphor-dim);
+		border-top: 1px dashed rgba(255, 176, 0, 0.45);
+		padding-top: 0.5rem;
+	}
+
+	.status {
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.status.signed {
+		color: var(--phosphor);
+	}
+
+	.status.unsigned {
+		color: #ff7a4a;
+		animation: terminalWarnBlink 1.2s step-end infinite;
+	}
+
+	@keyframes terminalWarnBlink {
+		0%,
+		49% {
+			opacity: 1;
+		}
+		50%,
+		100% {
+			opacity: 0.25;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.logs-box {
+			max-height: none;
+		}
+
+		.entry-title {
+			font-size: 1.12rem;
+		}
+	}
+</style>
