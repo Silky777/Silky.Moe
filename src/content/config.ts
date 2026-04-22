@@ -4,14 +4,14 @@ const logs = defineCollection({
 	type: 'content',
 	schema: z.object({
 		title: z.string(),
-		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		tags: z.array(z.string()).default([]),
 		signature: z
 			.object({
+				signer: z.string().optional(),
 				fingerprint: z.string(),
-				signedAt: z.coerce.date(),
+				signedAt: z.coerce.date().optional(),
 				signedFile: z.string().startsWith('/'),
 				signatureFile: z.string().startsWith('/'),
 			})

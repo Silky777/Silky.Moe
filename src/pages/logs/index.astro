@@ -23,10 +23,12 @@ const logsWithPreview = logs.map((entry) => {
 	const bodyText = stripMarkdown(entry.body || '');
 	const preview = bodyText.length > 210 ? `${bodyText.slice(0, 210).trim()}...` : bodyText;
 	const signatureStatus = getSignatureStatus(entry);
+	const signer = entry.data.signature?.signer ?? 'silky.moe';
 	return {
 		entry,
-		preview: preview || entry.data.description,
+		preview: preview || '[no preview text]',
 		signatureStatus,
+		signer,
 	};
 });
 
@@ -40,8 +42,6 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 <Terminal title="~/logs">
 	<section class="logs-feed">
 		<p class="label">&gt; ls -lt /system_logs</p>
-		<p class="dim">Scroll for archive history.</p>
-		<p class="dim">Sign a post with: npm run sign-log -- your-slug</p>
 
 		{
 			logsWithPreview.length === 0 ? (
@@ -49,7 +49,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 			) : (
 				<div class="logs-box" role="region" aria-label="System logs archive">
 					<ul>
-						{logsWithPreview.map(({ entry, preview, signatureStatus }) => (
+						{logsWithPreview.map(({ entry, preview, signatureStatus, signer }) => (
 							<li>
 								<a class="entry-link" href={`/logs/${entry.slug}`}>
 									<span class="entry-title">{entry.data.title}</span>
@@ -57,7 +57,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 									<span class="entry-footer">
 										<span>{dateFmt.format(entry.data.pubDate)}</span>
 										<span class={`status ${signatureStatus.label}`}>
-											{signatureStatus.label === 'unsigned' ? '⚠ unsigned' : 'signed'}
+											{signatureStatus.label === 'unsigned' ? '⚠ UNSIGNED' : `SIGNED - ${signer}`}
 										</span>
 									</span>
 								</a>

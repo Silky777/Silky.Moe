@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
@@ -6,6 +7,7 @@ const rawInput = process.argv[2];
 const signingKeyArg = process.argv[3] || process.env.GPG_SIGNING_KEY;
 if (!rawInput) {
   console.error('Usage: npm run sign-log -- <slug-or-file> [key-id-or-fingerprint]');
+  console.error('Tip: set GPG_SIGNING_KEY in .env to avoid passing a key each time.');
   process.exit(1);
 }
 

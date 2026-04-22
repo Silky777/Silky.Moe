@@ -1,13 +1,12 @@
 ---
 title: Welcome To System Logs
-description: First signed publication in the silky.moe log archive.
 pubDate: 2026-04-22
 tags:
   - update
   - infrastructure
 signature:
+  signer: silky.moe
   fingerprint: "968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"
-  signedAt: 2026-04-22T14:00:00Z
   signedFile: /signed-logs/welcome-to-system-logs.md
   signatureFile: /signed-logs/welcome-to-system-logs.md.asc
 ---

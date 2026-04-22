@@ -7,11 +7,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "new-log": "node ./scripts/new-log.mjs",
     "sign-log": "node ./scripts/sign-log.mjs"
   },
   "dependencies": {
     "astro": "^5.7.10",
     "@astrojs/svelte": "^7.0.4",
+    "dotenv": "^16.6.1",
     "svelte": "^5.28.2"
   }
 }

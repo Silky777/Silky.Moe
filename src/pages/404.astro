@@ -37,7 +37,7 @@ import Terminal from "../layouts/Terminal.astro";
   .sys-error {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Hard left for the terminal aesthetic */
+    align-items: flex-start;
     padding: 2rem 0;
     gap: 1.5rem;
   }
@@ -73,13 +73,13 @@ import Terminal from "../layouts/Terminal.astro";
     text-decoration: none;
     padding: 0.5rem 1rem;
     border: 1px solid var(--phosphor);
-    transition: none; /* Keeps the instant hardware snap */
+    transition: none;
   }
 
   .actions a:hover {
     background: var(--phosphor);
     color: var(--bg-color);
-    text-shadow: none; /* Kills the glow when inverted so text remains crisp */
+    text-shadow: none;
   }
 
   .sub {

@@ -14,6 +14,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const signatureStatus = getSignatureStatus(entry);
+const signedAt = signatureStatus.signedAt ?? entry.data.signature?.signedAt ?? null;
+const signer = entry.data.signature?.signer ?? 'silky.moe';
 
 const pubDateFmt = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
@@ -51,7 +53,7 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
     {
       entry.data.signature ? (
         <section class="signature-box">
-            <p class="label">&gt; signature_status: {signatureStatus.label}</p>
+            <p class="label">&gt; signature_status: {signatureStatus.label} - {signer}</p>
             {signatureStatus.warning && (
               <p class="sig-warning" role="status">[WARN] {signatureStatus.warning}. Treated as unsigned.</p>
             )}
@@ -59,7 +61,7 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
             Fingerprint: <span class="val">{entry.data.signature.fingerprint}</span>
           </p>
           <p>
-            Signed: <span class="val">{timeFmt.format(entry.data.signature.signedAt)}</span>
+            Signed: <span class="val">{signedAt ? timeFmt.format(signedAt) : 'unknown'}</span>
           </p>
           <p>
             Signed source:{' '}
@@ -80,6 +82,7 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
         <section class="signature-box">
           <p class="label">&gt; signature_status: unsigned</p>
           <p class="meta">This log entry has no detached PGP signature yet.</p>
+          <p class="signature-footer unsigned">⚠ UNSIGNED</p>
         </section>
       )
     }
@@ -151,6 +154,24 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
   .sig-warning {
     color: #ff7a4a;
     text-transform: uppercase;
+    animation: terminalWarnBlink 1.2s step-end infinite;
+  }
+
+  .signature-footer {
+    margin-top: 0.8rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed rgba(255, 176, 0, 0.45);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .signature-footer.signed {
+    color: var(--phosphor);
+  }
+
+  .signature-footer.unsigned {
+    color: #ff7a4a;
     animation: terminalWarnBlink 1.2s step-end infinite;
   }
 
