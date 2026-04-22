@@ -61,7 +61,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 									<span class="entry-footer">
 										<span>{dateFmt.format(entry.data.pubDate)}</span>
 										<span class={`status ${signatureStatus.label}`}>
-											{signatureStatus.label === 'unsigned' ? '⚠ UNSIGNED' : `SIGNED - ${signer}`}
+											<span class="status-text">{signatureStatus.label === 'unsigned' ? '⚠ UNSIGNED' : `SIGNED - ${signer}`}</span>
 										</span>
 									</span>
 								</a>
@@ -153,7 +153,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 		color: var(--phosphor);
 	}
 
-	.status.unsigned {
+	.status.unsigned .status-text {
 		color: #ff7a4a;
 		animation: terminalWarnBlink 1s step-end infinite;
 	}

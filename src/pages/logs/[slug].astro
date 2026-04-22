@@ -39,6 +39,12 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
 <Terminal title={`~/logs/${entry.slug}`}>
   <article class="log-entry">
     <header>
+      <p class="back-nav">
+        <a class="back-nav-link" href="/logs" aria-label="Back to system logs">
+          <span class="back-nav-cmd">cd ../</span>
+          <span class="back-nav-hint">&larr; back to system logs</span>
+        </a>
+      </p>
       <p class="label">&gt; cat /system_logs/{entry.slug}.md</p>
       <h1>{entry.data.title}</h1>
       <p class="meta">Published {pubDateFmt.format(entry.data.pubDate)}</p>
@@ -55,7 +61,7 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
         <section class="signature-box">
             <p class="label">&gt; signature_status: {signatureStatus.label} - {signer}</p>
             {signatureStatus.warning && (
-              <p class="sig-warning" role="status">[WARN] {signatureStatus.warning}. Treated as unsigned.</p>
+                <p class="sig-warning" role="status"><span class="sig-warning-text">[WARN] {signatureStatus.warning}. Treated as unsigned.</span></p>
             )}
           <p>
             Fingerprint: <span class="val">{entry.data.signature.fingerprint}</span>
@@ -82,7 +88,7 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
         <section class="signature-box">
           <p class="label">&gt; signature_status: unsigned</p>
           <p class="meta">This log entry has no detached PGP signature yet.</p>
-          <p class="signature-footer unsigned">⚠ UNSIGNED</p>
+          <p class="signature-footer unsigned"><span class="unsigned-text">⚠ UNSIGNED</span></p>
         </section>
       )
     }
@@ -99,6 +105,30 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
   .label {
     margin: 0;
     opacity: 0.75;
+  }
+
+  .back-nav {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .back-nav-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    color: var(--phosphor-dim);
+  }
+
+  .back-nav-cmd {
+    color: var(--phosphor-muted);
+    font-size: 1.08rem;
+  }
+
+  .back-nav-hint {
+    opacity: 0.72;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
   }
 
   h1 {
@@ -154,6 +184,9 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
   .sig-warning {
     color: #ff7a4a;
     text-transform: uppercase;
+  }
+
+  .sig-warning-text {
     animation: terminalWarnBlink 1s step-end infinite;
   }
 
@@ -172,6 +205,9 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
 
   .signature-footer.unsigned {
     color: #ff7a4a;
+  }
+
+  .signature-footer.unsigned .unsigned-text {
     animation: terminalWarnBlink 1.2s step-end infinite;
   }
 
