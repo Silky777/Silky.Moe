@@ -22,18 +22,26 @@ const serializedLines = JSON.stringify(lines);
 
 <section class="boot" data-boot-sequence data-lines={serializedLines}></section>
 
-<script is:inline>
-  (() => {
+<script>
+  let bootTimers: ReturnType<typeof setTimeout>[] = [];
+
+  function clearBoot() {
+    bootTimers.forEach((t) => clearTimeout(t));
+    bootTimers = [];
+    const boot = document.querySelector('[data-boot-sequence]');
+    if (boot) boot.innerHTML = '';
+  }
+
+  function runBoot() {
     const boot = document.querySelector('[data-boot-sequence]');
     if (!boot) return;
 
     const rawLines = boot.getAttribute('data-lines');
     if (!rawLines) return;
 
-    const lines = JSON.parse(rawLines);
-    const timers = [];
+    const lines: { text: string; type?: string; delay: number }[] = JSON.parse(rawLines);
 
-    const renderLine = (line) => {
+    const renderLine = (line: { text: string; type?: string }) => {
       if (line.type === 'header') {
         const heading = document.createElement('h2');
         heading.textContent = line.text;
@@ -50,14 +58,12 @@ const serializedLines = JSON.stringify(lines);
       }
 
       const paragraph = document.createElement('p');
+      if (line.type === 'prompt') paragraph.classList.add('prompt');
 
-      if (line.type === 'prompt') {
-        paragraph.classList.add('prompt');
-      }
-
-      const text = line.text === '> Last login: __LAST_LOGIN__'
-        ? `> Last login: ${new Date().toUTCString()}`
-        : line.text;
+      const text =
+        line.text === '> Last login: __LAST_LOGIN__'
+          ? `> Last login: ${new Date().toUTCString()}`
+          : line.text;
 
       paragraph.append(document.createTextNode(text));
 
@@ -72,13 +78,14 @@ const serializedLines = JSON.stringify(lines);
     };
 
     lines.forEach((line) => {
-      timers.push(window.setTimeout(() => renderLine(line), line.delay));
+      bootTimers.push(setTimeout(() => renderLine(line), line.delay));
     });
+  }
 
-    window.addEventListener('pagehide', () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-    }, { once: true });
-  })();
+  // Clear stale timers and DOM before each navigation swap
+  document.addEventListener('astro:before-swap', clearBoot);
+  // Re-run on initial load and after every view transition
+  document.addEventListener('astro:page-load', runBoot);
 </script>
 
 <style is:global>
