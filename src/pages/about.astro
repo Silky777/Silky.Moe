@@ -7,13 +7,14 @@ import Terminal from '../layouts/Terminal.astro';
 		<p class="label">> cat /etc/about_me</p>
 
 		<div class="block">
-			<p>23. Australian American. Generalized IT — jack of all trades, master of none, but often better than a master of one.</p>
+			<p>23, Australian American. General IT person. Jack of all trades, master of none, and honestly that has been useful for me.</p>
 		</div>
 
 		<div class="block">
 			<p class="label">> BACKGROUND:</p>
-			<p>I've worn a lot of hats — network engineering, systems work, desktop support, Discord bot dev. Programming languages are just different syntax over the same paradigms; read the docs, understand the logic, and you can build in anything.</p>
-			<p>THINK ABOUT ACCESSIBILITY.</p>
+			<p>I've worn a lot of hats in my time, really. Network engineering, systems work, desktop support, Discord bot development. I was once "supposed" to be a backend dev or sysadmin, but life made me use JavaScript and do front end one too many times and now I can reasonably be described as a full stack dev. That's just how the cookie crumbles I suppose.</p>
+			<p>I treat programming languages as different syntax over similar paradigms. If you understand the idea and read the docs, you can build in whatever language you need. Learn Haskell, learn C#, Python, and maybe some basics of C and you're basically set up to program however you wish.</p>
+			<p>I'm also oddly interested in getting accessibility working, tab orders, all that kind of stuff.</p>
 		</div>
 
 		<div class="block">
@@ -28,8 +29,8 @@ import Terminal from '../layouts/Terminal.astro';
 		<div class="block">
 			<p class="label">> PROJECTS:</p>
 			<ul>
-				<li><span class="highlight">silky.moe</span> — this site</li>
-				<li><span class="highlight">CeciliaBot</span> — local LLM hooked into Discord with limited memory</li>
+				<li><span class="highlight">silky.moe</span>: this site</li>
+				<li><span class="highlight">CeciliaBot</span>: local LLM connected to Discord with limited memory</li>
 			</ul>
 		</div>
 
@@ -71,7 +72,7 @@ import Terminal from '../layouts/Terminal.astro';
 	}
 
 	.dim {
-		opacity: 0.5;
+		color: var(--phosphor-dim);
 		font-size: 0.85rem;
 	}
 
@@ -113,6 +114,15 @@ import Terminal from '../layouts/Terminal.astro';
 		background: var(--phosphor);
 		color: var(--bg-color);
 		text-shadow: none;
+	}
+
+	a:focus,
+	a:focus-visible {
+		background: var(--phosphor);
+		color: var(--bg-color);
+		text-shadow: none;
+		outline: 2px solid var(--phosphor);
+		outline-offset: 2px;
 	}
 
 	.prompt {
