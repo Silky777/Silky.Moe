@@ -1,0 +1,4 @@
+# Keep signed content byte-stable across Windows/Linux for GPG detached signatures.
+src/content/logs/*.md text eol=lf
+public/signed-logs/*.md text eol=lf
+public/signed-logs/*.asc text eol=lf

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 
 const rawInput = process.argv[2];
@@ -28,7 +28,9 @@ if (!existsSync(signedDir)) {
   mkdirSync(signedDir, { recursive: true });
 }
 
-copyFileSync(sourcePath, signedPath);
+// Detached signatures are byte-exact; force LF to keep signatures valid across platforms.
+const sourceContent = readFileSync(sourcePath, 'utf8').replace(/\r\n/g, '\n');
+writeFileSync(signedPath, sourceContent, 'utf8');
 
 const gpgArgs = ['--yes', '--armor'];
 if (signingKeyArg) {
