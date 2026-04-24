@@ -44,13 +44,18 @@ try {
 		</script>
 	</head>
 	<body>
-		<div class="terminal-grid">
+		<div class={`terminal-grid${Astro.slots.has('right-panel') ? ' has-right-panel' : ''}`}>
 			<aside class="sidebar">
 				<SysNav version={commitCount} hits={visitorCount} />
 			</aside>
 			<main class="data-feed">
 				<slot />
 			</main>
+			{Astro.slots.has('right-panel') && (
+				<aside class="right-panel">
+					<slot name="right-panel" />
+				</aside>
+			)}
 		</div>
 	</body>
 </html>
@@ -68,6 +73,10 @@ try {
 		z-index: 10;
 	}
 
+	.terminal-grid.has-right-panel {
+		grid-template-columns: 300px 1fr 300px;
+	}
+
 	.sidebar {
 		border-right: 1px solid var(--phosphor);
 		padding-right: 1rem;
@@ -80,6 +89,18 @@ try {
 			max-height: calc(100vh - 4rem);
 			overflow-y: auto;
 		}
+
+		.right-panel {
+			position: sticky;
+			top: 2rem;
+			max-height: calc(100vh - 4rem);
+			overflow-y: auto;
+		}
+	}
+
+	.right-panel {
+		border-left: 1px solid var(--phosphor);
+		padding-left: 1rem;
 	}
 
 	.data-feed {
@@ -88,7 +109,8 @@ try {
 
 	/* Responsive snap for mobile */
 	@media (max-width: 768px) {
-		.terminal-grid {
+		.terminal-grid,
+		.terminal-grid.has-right-panel {
 			grid-template-columns: 1fr;
 			grid-template-rows: auto 1fr;
 		}
@@ -96,6 +118,12 @@ try {
 			border-right: none;
 			border-bottom: 1px solid var(--phosphor);
 			padding-bottom: 1rem;
+		}
+		.right-panel {
+			border-left: none;
+			border-top: 1px solid var(--phosphor);
+			padding-left: 0;
+			padding-top: 1rem;
 		}
 	}
 </style>

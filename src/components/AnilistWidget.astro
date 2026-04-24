@@ -1,0 +1,251 @@
+---
+interface Props {
+  username: string;
+}
+const { username } = Astro.props;
+---
+
+<div class="anilist-widget" data-username={username}>
+  <div class="widget-titlebar">
+    <span class="widget-title">&gt; ANILIST_FEED</span>
+    <a class="widget-user" href={`https://anilist.co/user/${username}`} target="_blank" rel="noopener noreferrer">@{username}</a>
+  </div>
+  <div class="widget-body">
+    <div id="anilist-loading" class="al-state">
+      fetching activity...<span class="blink">_</span>
+    </div>
+    <div id="anilist-error" class="al-state al-error" hidden>
+      ERR: failed to reach anilist.co
+    </div>
+    <ul id="anilist-list" class="al-list" hidden aria-label="Recent AniList activity"></ul>
+  </div>
+</div>
+
+<script>
+  const QUERY = `
+    query {
+      Page(perPage: 20) {
+        activities(userId: 6989389, sort: ID_DESC) {
+          ... on ListActivity {
+            id
+            status
+            progress
+            createdAt
+            media {
+              title { romaji english }
+              type
+              siteUrl
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  function timeAgo(unixSecs: number): string {
+    const diff = Math.floor(Date.now() / 1000) - unixSecs;
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+  }
+
+  function statusLine(status: string, progress: string | null, media: any): string {
+    const type = media.type === 'ANIME' ? 'ep' : 'ch';
+    if (status === 'completed') return 'completed';
+    if (status === 'rewatched episode') return `rewatched ep ${progress}`;
+    if (status === 'watched episode') return `watched ep ${progress}`;
+    if (status === 'read chapter') return `read ch ${progress}`;
+    if (status === 'plans to watch' || status === 'plans to read') return status;
+    return progress ? `${status} ${type} ${progress}` : status;
+  }
+
+  async function loadFeed() {
+    const widget = document.querySelector<HTMLElement>('.anilist-widget');
+    if (!widget) return;
+
+    const username = widget.dataset.username;
+    const loadingEl = document.getElementById('anilist-loading');
+    const errorEl = document.getElementById('anilist-error');
+    const listEl = document.getElementById('anilist-list');
+    if (!loadingEl || !errorEl || !listEl) return;
+
+    loadingEl.hidden = false;
+    errorEl.hidden = true;
+    listEl.hidden = true;
+    listEl.innerHTML = '';
+
+    try {
+      const res = await fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ query: QUERY }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const activities: any[] = json?.data?.Page?.activities ?? [];
+
+      // Filter to only ListActivity items (ones with a media field)
+      const items = activities.filter((a) => a.media);
+
+      if (items.length === 0) {
+        loadingEl.hidden = true;
+        errorEl.hidden = false;
+        errorEl.textContent = 'ERR: no activity found for this user';
+        return;
+      }
+
+      for (const item of items) {
+        const title = item.media.title.english || item.media.title.romaji;
+        const typeTag = item.media.type === 'ANIME' ? '[A]' : '[M]';
+        const line = statusLine(item.status, item.progress, item.media);
+        const ago = timeAgo(item.createdAt);
+
+        const li = document.createElement('li');
+        li.className = 'al-entry';
+        li.innerHTML = `
+          <span class="al-type">${typeTag}</span>
+          <span class="al-body">
+            <a class="al-title" href="${item.media.siteUrl}" target="_blank" rel="noopener noreferrer">${title}</a>
+            <span class="al-meta"><span class="al-status">${line}</span><span class="al-time">${ago}</span></span>
+          </span>
+        `;
+        listEl.appendChild(li);
+      }
+
+      loadingEl.hidden = true;
+      listEl.hidden = false;
+    } catch {
+      loadingEl.hidden = true;
+      errorEl.hidden = false;
+    }
+  }
+
+  document.addEventListener('astro:page-load', loadFeed);
+</script>
+
+<style is:global>
+  .anilist-widget {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+  }
+
+  .anilist-widget .widget-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dashed var(--phosphor);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .anilist-widget .widget-title {
+    color: var(--phosphor);
+    font-size: 0.85rem;
+  }
+
+  .anilist-widget .widget-user {
+    color: var(--phosphor-muted);
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .anilist-widget .widget-body {
+    /* ~5 entries visible, scroll for the rest */
+    max-height: 22rem;
+    overflow-y: auto;
+  }
+
+  .anilist-widget .al-state {
+    color: var(--phosphor-muted);
+    padding: 0.25rem 0;
+  }
+
+  .anilist-widget .al-error {
+    color: #ff7a4a;
+  }
+
+  @keyframes al-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .anilist-widget .blink {
+    animation: al-blink 1s step-end infinite;
+  }
+
+  .anilist-widget .al-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .anilist-widget .al-entry {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--phosphor-border-subtle);
+    padding-bottom: 0.6rem;
+  }
+
+  .anilist-widget .al-entry:last-child {
+    border-bottom: none;
+  }
+
+  .anilist-widget .al-type {
+    color: var(--phosphor-dim);
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+  }
+
+  .anilist-widget .al-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .anilist-widget .al-title {
+    color: var(--phosphor);
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .anilist-widget .al-title:hover {
+    background-color: var(--phosphor);
+    color: var(--bg-color);
+    text-shadow: none;
+    text-decoration: none;
+  }
+
+  .anilist-widget .al-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    color: var(--phosphor-muted);
+    font-size: 0.72rem;
+  }
+
+  .anilist-widget .al-status {
+    text-transform: lowercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .anilist-widget .al-time {
+    color: var(--phosphor-dim);
+  }
+</style>
