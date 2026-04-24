@@ -64,7 +64,6 @@ const { username } = Astro.props;
     const widget = document.querySelector<HTMLElement>('.anilist-widget');
     if (!widget) return;
 
-    const username = widget.dataset.username;
     const loadingEl = document.getElementById('anilist-loading');
     const errorEl = document.getElementById('anilist-error');
     const listEl = document.getElementById('anilist-list');
@@ -76,14 +75,24 @@ const { username } = Astro.props;
     listEl.innerHTML = '';
 
     try {
-      const res = await fetch('https://graphql.anilist.co', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ query: QUERY }),
-      });
+      let json;
+      try {
+        const res = await fetch('https://graphql.anilist.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ query: QUERY }),
+        });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        json = await res.json();
+        if (json.errors) throw new Error('GraphQL returned errors');
+      } catch (err) {
+        console.warn('Failed to fetch live AniList API, falling back to cache:', err);
+        const cacheRes = await fetch('/anilist-cache.json');
+        if (!cacheRes.ok) throw new Error('Failed to load cached AniList data');
+        json = await cacheRes.json();
+      }
+
       const activities: any[] = json?.data?.Page?.activities ?? [];
 
       // Filter to only ListActivity items (ones with a media field)
