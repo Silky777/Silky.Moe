@@ -7,6 +7,8 @@ Amber CRT-style personal site built with Astro and deployed on GitHub Pages.
 - Astro 5
 - GitHub Pages (GitHub Actions deploy)
 - GoatCounter (visitor count)
+- AniList public GraphQL feed (homepage widget)
+- Steam activity via Cloudflare Worker proxy (homepage widget)
 - GPG detached signatures for `system_logs` posts
 
 ## Local Development
@@ -40,7 +42,7 @@ GPG_FINGERPRINT="968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"
 PUBLIC_STEAM_ID=
 PUBLIC_STEAM_PROXY_URL=
 PUBLIC_STEAM_BLOCK_APPIDS=
-PUBLIC_STEAM_BLOCK_WORDS=hentai,nsfw,adult,sex,erotic,lewd
+PUBLIC_STEAM_BLOCK_WORDS=
 ```
 
 ### What these do
@@ -61,31 +63,41 @@ The homepage Steam widget calls:
 GET {PUBLIC_STEAM_PROXY_URL}?steamId={PUBLIC_STEAM_ID}
 ```
 
-Expected JSON shape:
+Current JSON shape (used by the widget):
 
 ```json
 {
+  "steamId": "7656119...",
+  "playerState": 1,
   "currentlyPlaying": { "appid": 730, "name": "Counter-Strike 2" },
+  "player": {
+    "name": "Silky",
+    "profileUrl": "https://steamcommunity.com/id/...",
+    "state": { "code": 1, "text": "online" }
+  },
   "recentGames": [
-    { "appid": 730, "name": "Counter-Strike 2", "playtime_2weeks": 420, "playtime_forever": 12000 }
-  ]
+    {
+      "appid": 730,
+      "name": "Counter-Strike 2",
+      "lastPlayedUnix": 1714000000,
+      "playtime_2weeks": 420,
+      "playtime_forever": 12000
+    }
+  ],
+  "metrics": {
+    "gamesPlayed": 4,
+    "totalTwoWeekMinutes": 300,
+    "totalTwoWeekHours": 5,
+    "topGame": { "appid": 730, "name": "Counter-Strike 2", "minutes": 210, "sharePct": 70 }
+  }
 }
 ```
 
 Use a proxy so your Steam API key stays private and is never exposed client-side.
 
-### Verbose Cloudflare Worker (Recommended)
+### Cloudflare Worker Setup
 
 A full Worker implementation lives in [workers/steam-integration.js](workers/steam-integration.js).
-
-It returns both the minimal keys the widget needs and a richer payload with:
-
-- player profile + persona state text
-- current game links
-- recent games (enriched URLs and image URLs)
-- owned games summary
-- account level + bans
-- diagnostics for upstream request status/latency
 
 Deploy flow:
 
@@ -99,10 +111,21 @@ Deploy flow:
 https://steamintegration.<yourusername>.workers.dev?steamId=76561198347087564
 ```
 
-The homepage widget is backward compatible with both payload styles:
+The widget uses these fields directly:
 
-- minimal: `currentlyPlaying`, `recentGames`, `playerState`
-- verbose: `player.currentGame`, `recent.games`, `player.state.code`
+- identity: `player.name`, `player.profileUrl`
+- live state: `playerState`, `currentlyPlaying`
+- ordering/display: `recentGames[].lastPlayedUnix`
+- summary line: `metrics.totalTwoWeekHours`, `metrics.gamesPlayed`, `metrics.topGame`
+
+### Production Filter Behavior
+
+The deploy workflow currently hardcodes these build-time Steam filters:
+
+- `PUBLIC_STEAM_BLOCK_APPIDS=250820` (SteamVR)
+- `PUBLIC_STEAM_BLOCK_WORDS=hentai,nsfw,adult,sex,erotic,lewd`
+
+They are set in [\.github/workflows/deploy.yml](.github/workflows/deploy.yml), so production does not depend on a `.env` file.
 
 ## Publishing Logs
 
