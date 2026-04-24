@@ -160,7 +160,6 @@ const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,a
         .sort((a, b) => {
           const byLastPlayed = (b.game.lastPlayedUnix ?? 0) - (a.game.lastPlayedUnix ?? 0);
           if (byLastPlayed !== 0) return byLastPlayed;
-          // Preserve upstream order when timestamps tie/missing
           return a.index - b.index;
         })
         .map((entry) => entry.game);

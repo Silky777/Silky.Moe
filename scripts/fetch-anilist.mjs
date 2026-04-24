@@ -53,7 +53,7 @@ async function fetchAnilist() {
     console.log(`Successfully wrote ${activities.length} activities to ${cachePath}`);
   } catch (err) {
     console.error('Failed to fetch AniList data:', err.message);
-    process.exit(1); // Exit with error so GitHub Actions knows it failed and won't try to commit
+    process.exit(1);
   }
 }
 

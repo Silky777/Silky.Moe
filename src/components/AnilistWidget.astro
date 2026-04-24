@@ -95,7 +95,6 @@ const { username } = Astro.props;
 
       const activities: any[] = json?.data?.Page?.activities ?? [];
 
-      // Filter to only ListActivity items (ones with a media field)
       const items = activities.filter((a) => a.media);
 
       if (items.length === 0) {
@@ -165,7 +164,6 @@ const { username } = Astro.props;
   }
 
   .anilist-widget .widget-body {
-    /* ~5 entries visible, scroll for the rest */
     max-height: 22rem;
     overflow-y: auto;
   }

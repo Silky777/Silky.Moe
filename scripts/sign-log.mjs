@@ -28,7 +28,6 @@ if (!existsSync(signedDir)) {
   mkdirSync(signedDir, { recursive: true });
 }
 
-// Detached signatures are byte-exact; force LF to keep signatures valid across platforms.
 const sourceContent = readFileSync(sourcePath, 'utf8').replace(/\r\n/g, '\n');
 writeFileSync(signedPath, sourceContent, 'utf8');
 

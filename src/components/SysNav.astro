@@ -65,25 +65,21 @@ const { version = '0', hits = '---' } = Astro.props;
     clockInterval = setInterval(tick, 1000);
   }
 
-  // --- High-contrast toggle ---
   function applyContrast(hc: boolean) {
     document.documentElement.classList.toggle('high-contrast', hc);
     const btn = document.getElementById('contrast-toggle');
     if (btn) btn.textContent = hc ? '[HIGH]' : '[STANDARD]';
   }
 
-  // Re-apply HC class after ViewTransitions swaps the html element
   document.addEventListener('astro:after-swap', () => {
     if (localStorage.getItem('high-contrast') === '1') {
       document.documentElement.classList.add('high-contrast');
     }
   });
 
-  // astro:page-load fires on initial load and after every view transition
   document.addEventListener('astro:page-load', () => {
     startClock();
 
-    // Sync button label to current class (class was applied by anti-FOUC script)
     const hc = document.documentElement.classList.contains('high-contrast');
     const btn = document.getElementById('contrast-toggle');
     if (btn) {
