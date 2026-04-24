@@ -1,0 +1,288 @@
+{
+  "data": {
+    "Page": {
+      "activities": [
+        {
+          "id": 1063631666,
+          "status": "read chapter",
+          "progress": "158",
+          "createdAt": 1777021730,
+          "media": {
+            "title": {
+              "romaji": "Mudanggihyeop",
+              "english": "The Grand Mudang Saga"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/127783"
+          }
+        },
+        {
+          "id": 1063630864,
+          "status": "read chapter",
+          "progress": "174 - 175",
+          "createdAt": 1777021562,
+          "media": {
+            "title": {
+              "romaji": "Cheonhwaseogo Daegongja",
+              "english": "Cheonhwa Archive's Young Master"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/160693"
+          }
+        },
+        {
+          "id": 1063628426,
+          "status": "read chapter",
+          "progress": "159",
+          "createdAt": 1777021054,
+          "media": {
+            "title": {
+              "romaji": "Hwasangwihwan",
+              "english": "Return of the Blossoming Blade"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/132144"
+          }
+        },
+        {
+          "id": 1063626299,
+          "status": "read chapter",
+          "progress": "256 - 257",
+          "createdAt": 1777020591,
+          "media": {
+            "title": {
+              "romaji": "Dingji Qiyun, Qiaoqiao Xiulian Qian Nian",
+              "english": "Lucky Me: I Secretly Cultivated for 1,000 Years"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/154258"
+          }
+        },
+        {
+          "id": 1062623312,
+          "status": "completed",
+          "progress": null,
+          "createdAt": 1776865132,
+          "media": {
+            "title": {
+              "romaji": "Sakamoto desu ga?",
+              "english": "Haven't You Heard? I'm Sakamoto"
+            },
+            "type": "ANIME",
+            "siteUrl": "https://anilist.co/anime/21595"
+          }
+        },
+        {
+          "id": 1062617082,
+          "status": "watched episode",
+          "progress": "7 - 11",
+          "createdAt": 1776863994,
+          "media": {
+            "title": {
+              "romaji": "Sakamoto desu ga?",
+              "english": "Haven't You Heard? I'm Sakamoto"
+            },
+            "type": "ANIME",
+            "siteUrl": "https://anilist.co/anime/21595"
+          }
+        },
+        {
+          "id": 1062076497,
+          "status": "watched episode",
+          "progress": "1 - 5",
+          "createdAt": 1776777816,
+          "media": {
+            "title": {
+              "romaji": "Sakamoto desu ga?",
+              "english": "Haven't You Heard? I'm Sakamoto"
+            },
+            "type": "ANIME",
+            "siteUrl": "https://anilist.co/anime/21595"
+          }
+        },
+        {
+          "id": 1062001811,
+          "status": "read chapter",
+          "progress": "170",
+          "createdAt": 1776763927,
+          "media": {
+            "title": {
+              "romaji": "Jeoldaegeomgam",
+              "english": "Absolute Sword Sense"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/151460"
+          }
+        },
+        {
+          "id": 1062000186,
+          "status": "read chapter",
+          "progress": "105 - 106",
+          "createdAt": 1776763623,
+          "media": {
+            "title": {
+              "romaji": "Oneulman Saneun Gisa",
+              "english": "The Knight Only Lives Today"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/177706"
+          }
+        },
+        {
+          "id": 1058879732,
+          "status": "watched episode",
+          "progress": "1 - 2",
+          "createdAt": 1776271005,
+          "media": {
+            "title": {
+              "romaji": "Toaru Ossan no VRMMO Katsudouki",
+              "english": "A Playthrough of a Certain Dude's VRMMO Life"
+            },
+            "type": "ANIME",
+            "siteUrl": "https://anilist.co/anime/161364"
+          }
+        },
+        {
+          "id": 1058018901,
+          "status": "read chapter",
+          "progress": "97 - 104",
+          "createdAt": 1776134020,
+          "media": {
+            "title": {
+              "romaji": "Oneulman Saneun Gisa",
+              "english": "The Knight Only Lives Today"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/177706"
+          }
+        },
+        {
+          "id": 1058010321,
+          "status": "read chapter",
+          "progress": "171 - 173",
+          "createdAt": 1776132645,
+          "media": {
+            "title": {
+              "romaji": "Cheonhwaseogo Daegongja",
+              "english": "Cheonhwa Archive's Young Master"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/160693"
+          }
+        },
+        {
+          "id": 1058002074,
+          "status": "read chapter",
+          "progress": "250 - 255",
+          "createdAt": 1776131886,
+          "media": {
+            "title": {
+              "romaji": "Dingji Qiyun, Qiaoqiao Xiulian Qian Nian",
+              "english": "Lucky Me: I Secretly Cultivated for 1,000 Years"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/154258"
+          }
+        },
+        {
+          "id": 1057956254,
+          "status": "read chapter",
+          "progress": "229",
+          "createdAt": 1776125658,
+          "media": {
+            "title": {
+              "romaji": "Ore Igai Dare mo Saishu Dekinai Sozai nano ni \"Sozai Saishuritsu ga Hikui\" to Pawahara Suru Osananajimi Renkinjutsushi to Zetsuen Shita Senzoku Madoushi, Henkyou no Machi de Slow Life wo Okuritai.",
+              "english": null
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/168187"
+          }
+        },
+        {
+          "id": 1050144994,
+          "status": "read chapter",
+          "progress": "58 - 60",
+          "createdAt": 1775012931,
+          "media": {
+            "title": {
+              "romaji": "Myeolmanghan Wanggugui 3-wangjaga Hoegwihaetda",
+              "english": "Regression of the Third Prince"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/194672"
+          }
+        },
+        {
+          "id": 1050142193,
+          "status": "read chapter",
+          "progress": "76 - 80",
+          "createdAt": 1775012457,
+          "media": {
+            "title": {
+              "romaji": "Hoegwihan Yongbyeongeun Da Gyehoegi Itda",
+              "english": "The Regressed Mercenary Has a Plan"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/182066"
+          }
+        },
+        {
+          "id": 1050121410,
+          "status": "read chapter",
+          "progress": "167 - 170",
+          "createdAt": 1775009135,
+          "media": {
+            "title": {
+              "romaji": "Cheonhwaseogo Daegongja",
+              "english": "Cheonhwa Archive's Young Master"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/160693"
+          }
+        },
+        {
+          "id": 1050087573,
+          "status": "read chapter",
+          "progress": "198 - 201",
+          "createdAt": 1775003505,
+          "media": {
+            "title": {
+              "romaji": "Geomsulmyeongga Mangnaeadeul",
+              "english": "The Swordmaster's Son"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/149332"
+          }
+        },
+        {
+          "id": 1050084771,
+          "status": "read chapter",
+          "progress": "191 - 192",
+          "createdAt": 1775003019,
+          "media": {
+            "title": {
+              "romaji": "Gwangmahoegwi",
+              "english": "Return of the Mad Demon"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/137304"
+          }
+        },
+        {
+          "id": 1050062203,
+          "status": "read chapter",
+          "progress": "152 - 154",
+          "createdAt": 1774999683,
+          "media": {
+            "title": {
+              "romaji": "SSS-geup Jugeoya Saneun Hunter",
+              "english": "SSS-Class Revival Hunter"
+            },
+            "type": "MANGA",
+            "siteUrl": "https://anilist.co/manga/128067"
+          }
+        }
+      ]
+    }
+  }
+}
