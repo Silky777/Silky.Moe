@@ -1,6 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import '../styles/global.css';
 import SysNav from '../components/SysNav.astro';
 
@@ -12,7 +12,18 @@ const { title } = Astro.props;
 
 let commitCount = '0';
 try {
-	commitCount = execSync('git rev-list --count HEAD').toString().trim();
+	let commitAuthor = 'Silky777';
+	try {
+		commitAuthor = execFileSync('git', ['config', 'user.email'], { encoding: 'utf8' }).trim() || commitAuthor;
+	} catch {
+		try {
+			commitAuthor = execFileSync('git', ['config', 'user.name'], { encoding: 'utf8' }).trim() || commitAuthor;
+		} catch {}
+	}
+
+	commitCount = execFileSync('git', ['rev-list', '--count', `--author=${commitAuthor}`, 'HEAD'], {
+		encoding: 'utf8',
+	}).trim();
 } catch {}
 
 let visitorCount = '---';
