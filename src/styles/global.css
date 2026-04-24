@@ -7,6 +7,25 @@
     0 0 10px rgba(255, 176, 0, 0.6),
     0 0 20px rgba(255, 176, 0, 0.3);
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  /* Translucent border/fill tokens — override in HC mode below */
+  --phosphor-border-subtle: rgba(255, 176, 0, 0.35);
+  --phosphor-bg-tint: rgba(255, 176, 0, 0.04);
+  --phosphor-border-mid: rgba(255, 176, 0, 0.45);
+}
+
+/* High-contrast mode: WCAG AA compliant — warm off-white, no CRT bloom */
+html.high-contrast {
+  --phosphor: #f0ece4;
+  --phosphor-muted: #b8b3aa;
+  --phosphor-dim: #8c877f;
+  --glow: none;
+  --phosphor-border-subtle: rgba(240, 236, 228, 0.35);
+  --phosphor-bg-tint: rgba(240, 236, 228, 0.04);
+  --phosphor-border-mid: rgba(240, 236, 228, 0.45);
+}
+
+html.high-contrast body {
+  text-shadow: none;
 }
 
 * {

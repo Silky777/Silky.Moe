@@ -36,6 +36,12 @@ try {
 		<title>{title}</title>
 		<ViewTransitions />
 		<script data-goatcounter="https://silkymoe.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+		<!-- Restore high-contrast preference before first paint to prevent flash -->
+		<script is:inline>
+			if (localStorage.getItem('high-contrast') === '1') {
+				document.documentElement.classList.add('high-contrast');
+			}
+		</script>
 	</head>
 	<body>
 		<div class="terminal-grid">

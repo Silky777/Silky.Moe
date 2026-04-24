@@ -38,6 +38,7 @@ const { version = '0', hits = '---' } = Astro.props;
     <p>> UPTIME: <span class="val" id="sys-uptime">0d 0h 0m</span></p>
     <p>> LOAD_AVG: <span class="val">0.42 0.37 0.31</span></p>
     <p>> SESSIONS: <span class="val">1 active</span> (<span class="val">{hits}</span> historic)</p>
+    <p>> CONTRAST_MODE: <button id="contrast-toggle" class="contrast-btn" aria-label="Toggle high contrast mode" title="Switch between standard and high contrast display">[STANDARD]</button></p>
   </div>
 </div>
 
@@ -65,8 +66,36 @@ const { version = '0', hits = '---' } = Astro.props;
     clockInterval = setInterval(tick, 1000);
   }
 
+  // --- High-contrast toggle ---
+  function applyContrast(hc: boolean) {
+    document.documentElement.classList.toggle('high-contrast', hc);
+    const btn = document.getElementById('contrast-toggle');
+    if (btn) btn.textContent = hc ? '[HIGH]' : '[STANDARD]';
+  }
+
+  // Re-apply HC class after ViewTransitions swaps the html element
+  document.addEventListener('astro:after-swap', () => {
+    if (localStorage.getItem('high-contrast') === '1') {
+      document.documentElement.classList.add('high-contrast');
+    }
+  });
+
   // astro:page-load fires on initial load and after every view transition
-  document.addEventListener('astro:page-load', startClock);
+  document.addEventListener('astro:page-load', () => {
+    startClock();
+
+    // Sync button label to current class (class was applied by anti-FOUC script)
+    const hc = document.documentElement.classList.contains('high-contrast');
+    const btn = document.getElementById('contrast-toggle');
+    if (btn) {
+      btn.textContent = hc ? '[HIGH]' : '[STANDARD]';
+      btn.addEventListener('click', () => {
+        const next = !document.documentElement.classList.contains('high-contrast');
+        localStorage.setItem('high-contrast', next ? '1' : '0');
+        applyContrast(next);
+      });
+    }
+  });
 </script>
 
 <style>
@@ -157,5 +186,31 @@ const { version = '0', hits = '---' } = Astro.props;
   .sys-status .val {
     opacity: 1;
     color: var(--phosphor);
+  }
+
+  .a11y-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .contrast-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--phosphor);
+    cursor: pointer;
+    padding: 0;
+    text-shadow: var(--glow);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .contrast-btn:hover {
+    background-color: var(--phosphor);
+    color: var(--bg-color);
+    text-shadow: none;
+    text-decoration: none;
   }
 </style>
