@@ -1,0 +1,153 @@
+---
+import Terminal from '../layouts/Terminal.astro';
+---
+
+<Terminal title="~/who_am_i">
+  <section class="background-page">
+    <p class="back-nav">
+      <a class="back-nav-link" href="/about" aria-label="Back to about me">
+        <span class="back-nav-cmd">cd ../</span>
+        <span class="back-nav-hint">&larr; back to about me</span>
+      </a>
+    </p>
+    <p class="label">&gt; cat /etc/who_am_i</p>
+    <h2 class="page-title">A more in depth description of who I am and how I got here</h2>
+
+    <div class="block">
+      <p class="section-label">&gt; EARLY_LIFE:</p>
+      <p>I started off as a "rural" country boy, really. My dad was a network technician, my mother was a journalist turned full-time mother. I say rural as if I grew up on a farm, but really I just grew up on 2 acres with someone else keeping their horses in the back pasture.</p>
+      <p>My dad is an Australian immigrant, but I was born in the US, so I'm only an immigrant in theory. In practice I'm almost entirely integrated with American society, with just a bit more knowledge of Australia than you'd expect from anyone else.</p>
+      <p>We weren't poor growing up, but definitely not that well off either. I had an experience of the middle ground. We always had food on the table and the lights were kept on, but it got tight from time to time and the food quality did sometimes degrade as a direct result. We made it work.</p>
+    </div>
+
+    <div class="block">
+      <p class="section-label">&gt; HOMESCHOOLING_AND_FAMILY:</p>
+      <p>I was diagnosed with autism at 6 years old, and my mother was very much on top of things in that regard. That meant that from an early age she worked with me to mitigate that. My technical diagnosis remains PDD-NOS, which was the diagnosis language being used at the time, as I was too developmentally stunted to be considered Asperger's but not stunted enough to be considered a case of true classical autism. This resulted in me being incredibly high functioning intellectually, but socially I was nearly entirely inept. My ineptitude in that regard ended up getting me labeled as a "bad kid" pretty early in my school career, and not wanting her son to be branded like that my mother pulled me from the school system and switched to homeschooling me and soon afterwards my sister.</p>
+      <p>Under her tutelage I learned much faster than a standard student. As a former journalist, her grading was quite harsh, especially in regards to English. My AuDHD was a challenge, especially for arithmetic, but she worked with me and was able to easily get me a grade ahead in almost all regards, and to a peak high school level in English. I honestly haven't had to learn anything extra about writing papers since about 5th grade, as my education in that regard was essentially completed. I also entertained myself by reading many encyclopedias, as I blitzed through most fantasy books too fast to really be kept by them for long, and memorizing the entire contents of an encyclopedia entertained me for much longer. I became a treasure trove of random facts from whatever I had read most recently, and honestly gained a surprising amount of knowledge about almost any topic of interest that could be found in those books.</p>
+      <p>During that time I also was able to watch my father work, in the little time he was home between work trips. I wouldn't call him an absent father by any means, but his constant travel meant that my connection with him was comparably slim compared to that which I had with my mother, who schooled me every day and was a constant presence in my life. However, from him I learned a love of technology, and really saw a driven man who did everything he possibly could to put food on the table for our family. I have respected very few people more than my father for that, really. He is the spitting image of the American Dream, coming to America and making a now very comfortable life for himself with only a GED at his side. I don't know if I'll ever be able to live up to that legacy, being entirely honest. His work ethic is something I hold a very deep respect for.</p>
+    </div>
+
+    <div class="block">
+      <p class="section-label">&gt; SCHOOL_REENTRY_AND_ONLINE_LIFE:</p>
+      <p>Either way, fast forward to 5th grade. My AuDHD has put my mother at a standstill on how to continue to educate me, with tweenage angst running high and a natural desire to rebel against her. The decision is made, with minor pushing from my father, that I need to go into public middle school so that I am not still hopelessly socially inept by the time I reach high school and beyond. As much as I begrudge this decision, I understand the logic of it. So for 6th grade I was a public school student.</p>
+      <p>Getting reintegrated with the school system was easy, as far as all things are concerned. An IQ test, a placement test, just general knowledge stuff. I pass with flying colors, and end up being qualified to skip a grade. My mother declines on my behalf, which I consider a relatively mistaken decision but also I understand where she was coming from. She didn't want me to be younger than my peers and unable to relate to them on the basis of age. However, the result of this decision was someone who already knew all the material and who had zero social filter for trying to disseminate my knowledge being placed into 6th grade. As one could logically expect, I earned a reputation as an insufferable know-it-all. I didn't know that my knowledge wasn't really wanted or desired to be interjected, but I did it anyway because it feels good to be right.</p>
+      <p>Around this time I had also discovered a new obsession, which was bypassing my father's increasingly arcane ways of keeping me off the internet after hours. I have never had a particularly excellent sleep schedule, and after 6 years of saving up I finally had (approximately) the $600 I needed to buy my own gaming PC. This was right at the height of Overwatch's popularity on YouTube, and seeing all of my favorite youtubers play it made the FOMO pretty bad. So I had my own PC at this point, a little prebuilt with half decent specs with the assistance of my father. Anyway, back to the sleep schedule thing, my esoteric sleep schedule resulted in me very often being awake with a desire to be on the internet far past the point in time where I was meant to be asleep. So my father tried many things. First was simply putting a password on the family computer before I had my own: bypassed with the old cmd.exe > sethc.exe trick. Second was putting a firewall up to block my MAC address after bed time: theoretically bypassed with MAC address spoofing.</p>
+      <p>I honestly think those nights without internet were one of the prime times in my life. I would stay up late into the night, having downloaded music locally, playing singleplayer games, and occasionally having a youtube video saved to watch once I had no internet connection. It was like my own personal slice of the 90's I suppose, what with Winamp, singleplayer games (Enter the Gungeon was a favorite), and so on.</p>
+      <p>Eventually I went from 6th to 7th grade, which went only slightly better as I was finally at material which forced me to actually learn and I couldn't be <em>quite</em> the insufferable know-it-all I once was. But my reputation carried with me, and I still learned far faster than 80% of my peers. At least by this point I was starting to understand that my constant corrections weren't appreciated, and I began to temper myself somewhat, though the damage to my social standing was largely irreversible by then. I did, however, convince my parents to allow me to go through high school online, avoiding the impending social disaster of high school and leaving behind my miserable reputation in middle school.</p>
+    </div>
+
+    <div class="block">
+      <p class="section-label">&gt; DISCORD_AND_TECHNICAL_STARTS:</p>
+      <p>It was also around this time that I ended up on Discord, late 2015 to early 2016. That's truly where I learned to socialize, and learned the social nuance my parents hoped would be derived from public school. However their perspective is understandable. Back in their day it simply wasn't possible to end up talking to hundreds or even thousands of different people from a simple computer box. But that was the playground upon which I experimented with social interaction, learned how to read social cues, learned how to fit in, and learned to be a decent person. It was also where I began my journey as an actual IT person.</p>
+      <p>On Discord I tended towards roleplay communities at first, as cringy as it is, they were a space where I could express myself and have fun portraying myself as different characters. These communities were often built around specific fandoms or original settings, and I found myself drawn to the collaborative storytelling aspect of it all. Through creating characters and narratives, I could explore different personas and practice social interaction in a low-stakes environment where mistakes felt less consequential. This is where I got my interest in history, diving deep into historical periods to make my characters more authentic, in material science through the lens of powerscaling weapon materials in fantasy settings, and in roleplaying itself which eventually blossomed into a genuine interest in TTRPGs. The creative writing and worldbuilding that came from these communities became a core part of my identity, teaching me how to develop my own character through the development of fictional ones.</p>
+      <p>That transition into online spaces mattered for more than just convenience. It gave me a place where knowledge, experimentation, and identity all felt a little less punished than they had in school. Looking back, a lot of the person I eventually became was forged there: socially, technically, and creatively.</p>
+      <p>My first project was a simple little thing. Using a now relatively defunct product called Discord Bot Maker on the Steam store, which is basically Scratch for Discord bots, I made my own application. Then, frustrated with my inability to make it work as I desired, more and more of the bot ended up being coded by hand. This resulted in an eventual capitulation to simply making the bot myself, and thus I learned JS to a limited degree. I also ended up taking a Python class in high school, along with sociology, audio engineering, and a few other random electives I deemed intriguing.</p>
+      <p>I see my high school electives also as the source of why I call myself a jack of all trades, master of none. The combination of my younger encyclopedia reading, my mother's strict tutelage of dictation so I could hold and internalize long strings of text easily, and the disparate interests in electives across high school left me a pretty well-rounded individual.</p>
+    </div>
+
+    <div class="block">
+      <p class="section-label">&gt; COLLEGE_AND_WORK:</p>
+      <p>My final year of high school was 2020, completed in only three years, resulting in the complete absence of a graduation ceremony. I graduated 3rd in a class of around 6400, a grand total of all students in my state enrolled at the same online school. I was considered a valedictorian due to the size of the class, but was thankfully spared the pain of a speech because only the top two students had to give one. My high school stats were an unweighted GPA of 3.98 and an ACT score of 32 (although I took it twice with a superscore of 34).</p>
+      <p>It was around the middle of high school that one of my friends on Discord, in the midst of my heated rant about gender roles being bullshit and how much I wished I could simply defy them, asked me a simple question. "Have you ever considered that you might be non-binary?" Now, this question hit me like a truck. I actually hadn't ever considered this, but the possibility struck a chord with me and lingered in my mind, and very soon after I mentally decided that, "Yes, quite possibly. I am likely non-binary."</p>
+      <p>High school was my peak for a long while though, as my natural intelligence and intuition failed to carry me through college. My first college was Pittburg State University, in Kansas. I enrolled, and failed miserably as someone who had never properly learned how to study or truly apply myself. This resulted in a last minute full withdrawal from the session, and a defeated turn home with my entire system of self worth built around my academic success destroyed. For a few months I pivoted, finding my first job at a top tier steakhouse in my home city. It was rather fun, walking around in a black suit, bossing servers around (I was an expo), and generally getting to run the place inasmuch as my position would allow. A mini-manager if you will.</p>
+      <p>That failure hit harder than the grades alone would suggest. When most of your self-concept is built on being the smart one, finding the edge of that ability is brutal. In hindsight, it was probably necessary. It forced me to separate intelligence from discipline, and potential from execution, even if I did not fully learn that lesson all at once.</p>
+      <p>After that passed, however, I made my return to school the next fall. Instead of overloading myself with 19 credit hours of classes and a double major degree path in two schools of engineering, I made the far more realistic and modest choice of simply opting for an Associate's Degree in IT. This proved far more sustainable, although I still struggled with studying. For the next two years that's where I was, at OSUIT, studying generalized IT. It was an easy program, and from earlier random endeavors and projects I essentially already knew everything there. I have the Touch when it comes to IT, if that makes any sense. I can very quickly make sense of <em>most</em> things, although I won't pretend to be omnicompetent or be able to figure out actually complicated algorithmic behavior from simply reading through it. Most sorting algorithms are still a black box to me.</p>
+      <p>After graduation from there, though, with a GPA of a measly 2.5 (exactly the requirement for graduation), I found my first job post college as an internship at a bank as desktop support. It was nepotism, for sure, but it was a job and I did well at it. Although I landed the job because of connections, I was well liked and quite likely could have negotiated for a permanent position once the internship was completed. After that, I was a security camera operator for only a few months before I scored a year-long contract at a large S&P 500 oil and gas company that shall go unnamed.</p>
+      <p>It was at this job that I finally arrived at the end of a very long slope. The question of whether I was trans had been present in some form since around 16, with no single turning point so much as a gradual accumulation of quiet confirmations over the years. My parents had cautioned me to be wary of it being "just a phase," and I hadn't wanted to make decisions I'd regret, so I'd taken my time. By the contract, there was nothing left to deliberate. I knew.</p>
+      <p>At the contract job, I did quite a few things. My job title was Network Engineer, but really that was only for show. Realistically I was an on site technician doing very simple staging work based on actual engineering done by the people upstairs. I learned a lot about Cisco, ended up on a sub team doing development work for a web app of networking tools to make my job and other's easier, and learned a lot of frameworks and tricks of the trade. I am by no means an actual network engineer, but I know just enough to be dangerous.</p>
+      <p>At the end of the contract, I moved to Arizona to be with my then-girlfriend. That decision had been a long time coming. I had met her around the time of Pitt State, and after that collapse she became my constant companion online, giving my life a sense of direction and forward motion that I badly needed at the time. The idea that I would eventually move in with her had always been there, but vague. More of a standing intention than a plan. The contract gave it structure. "After this contract I will move in with you" became something concrete and actionable, and so when it ended, I went. However, moving in with her proved disastrous, ending in a situation too catastrophic for me to detail here in good conscience. It really boiled down to a complete emotional incompatibility.</p>
+      <p>After the relationship with my ex had very quickly and catastrophically deteriorated into something beyond saving, I found myself stranded. Living a thousand miles from any other acquaintance and devoid of purpose, I pined over the loss of a relationship of nearly 5 years for quite a long time. However, I eventually resolved myself to finding <em>something</em> to do with my life, lest I end up destroying myself in my indolence and stagnant self-pity. The solution I arrived upon, after sufficient inability to find gainful employment, was going to ASU. This semester has been doomed, and has cost me far more than I'd ever wish and has resulted in very little of substance being learned, although I had fun in the Excel class which was pretending to be a biology lab class.</p>
+    </div>
+
+    <div class="block">
+      <p class="section-label">&gt; IDENTITY_AND_NOW:</p>
+      <p>And so the most recent chapter has been this. Still living in Arizona, living off savings and trying to make ends meet, and learning Astro to put together this site. I started HRT finally on January 7th of this year, finally putting me on track to be who I want to be (although I still haven't told my parents yet, that should be a fun conversation).</p>
+      <p>And so we arrive at the now, when I write this message. I might update it later with different life happenings, but that's how things stand today.</p>
+      <p>A 23 year old trans chronically online autist on the internet with a broad swath of knowledge across many fields, an interest in ren fair activities and music, a smattering of deeper education across the broad and poorly defined field of "IT," and an endless drive to figure things out and make them work.</p>
+      <p>If there is any throughline to all of it, it is probably this: I have spent most of my life trying to understand systems, whether those systems were technical, social, or personal. That is still what I am doing now, just with more intention than I had when I started.</p>
+    </div>
+
+    <p class="prompt">guest@sys:~$ <span class="blink">_</span></p>
+  </section>
+</Terminal>
+
+<style>
+  .background-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+   .back-nav {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .back-nav-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    color: var(--phosphor-dim);
+  }
+
+  .back-nav-cmd {
+    color: var(--phosphor-muted);
+    font-size: 1.08rem;
+  }
+
+  .back-nav-hint {
+    opacity: 0.72;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
+  }
+
+  .block {
+    border-left: 2px solid var(--phosphor);
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .block p {
+    margin: 0;
+    line-height: 1.5;
+    max-width: 78ch;
+  }
+
+  .label {
+    margin: 0;
+    opacity: 0.72;
+    font-size: 0.85rem;
+  }
+
+  .section-label {
+    margin: 0;
+    opacity: 0.78;
+    font-size: 0.85rem;
+  }
+
+  .page-title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: bold;
+    line-height: 1.35;
+    max-width: 70ch;
+  }
+
+  .prompt {
+    margin-top: 0.4rem;
+    opacity: 0.62;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>
