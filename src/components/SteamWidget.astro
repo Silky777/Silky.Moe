@@ -1,0 +1,394 @@
+---
+const steamId = import.meta.env.PUBLIC_STEAM_ID ?? '76561198347087564';
+const steamProxyUrl = import.meta.env.PUBLIC_STEAM_PROXY_URL ?? 'https://steamintegration.vitaleriktts.workers.dev';
+const blockedAppIds = (import.meta.env.PUBLIC_STEAM_BLOCK_APPIDS ?? '250820')
+  .split(',')
+  .map((s: string) => Number.parseInt(s.trim(), 10))
+  .filter((n: number) => Number.isFinite(n));
+const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,adult,sex,erotic,lewd')
+  .split(',')
+  .map((s: string) => s.trim().toLowerCase())
+  .filter(Boolean);
+---
+
+<div
+  class="steam-widget"
+  data-steam-id={steamId}
+  data-proxy-url={steamProxyUrl}
+  data-blocked-appids={JSON.stringify(blockedAppIds)}
+  data-blocked-words={JSON.stringify(blockedWords)}
+>
+  <div class="widget-titlebar">
+    <span class="widget-title">&gt; STEAM_ACTIVITY</span>
+    <a
+      id="steam-user"
+      class="widget-user"
+      href={steamId ? `https://steamcommunity.com/profiles/${steamId}` : '#'}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {steamId ? '@profile' : '@unconfigured'}
+    </a>
+  </div>
+
+  <div class="widget-body">
+    <div id="steam-loading" class="st-state">fetching steam data...<span class="blink">_</span></div>
+    <div id="steam-error" class="st-state st-error" hidden>ERR: failed to reach steam feed</div>
+    <div id="steam-now" class="st-now" hidden></div>
+    <div id="steam-metrics" class="st-metrics" hidden></div>
+    <ul id="steam-list" class="st-list" hidden aria-label="Recent Steam activity"></ul>
+  </div>
+</div>
+
+<script>
+  type SteamGame = {
+    appid: number;
+    name: string;
+    lastPlayedUnix?: number;
+    playtime_2weeks?: number;
+    playtime_forever?: number;
+  };
+
+  type SteamMetrics = {
+    totalTwoWeekMinutes: number;
+    totalTwoWeekHours: number;
+    gamesPlayed: number;
+    topGame: { appid: number; name: string; minutes: number; sharePct: number } | null;
+  };
+
+  function minsToHours(mins: number | undefined): string {
+    if (!mins || mins <= 0) return '0h';
+    return `${(mins / 60).toFixed(mins >= 120 ? 0 : 1)}h`;
+  }
+
+  function gameUrl(appid: number): string {
+    return `https://store.steampowered.com/app/${appid}`;
+  }
+
+  function isBlocked(game: SteamGame, blockedIds: number[], blockedWords: string[]): boolean {
+    const lower = game.name.toLowerCase();
+    if (blockedIds.includes(game.appid)) return true;
+    return blockedWords.some((w) => lower.includes(w));
+  }
+
+  function computeMetrics(games: SteamGame[]): SteamMetrics {
+    const gamesPlayed = games.length;
+    const totalTwoWeekMinutes = games.reduce((sum, g) => sum + (g.playtime_2weeks ?? 0), 0);
+    const totalTwoWeekHours = Number((totalTwoWeekMinutes / 60).toFixed(totalTwoWeekMinutes >= 120 ? 0 : 1));
+
+    let topGame: SteamMetrics['topGame'] = null;
+    for (const g of games) {
+      const mins = g.playtime_2weeks ?? 0;
+      if (!topGame || mins > topGame.minutes) {
+        topGame = {
+          appid: g.appid,
+          name: g.name,
+          minutes: mins,
+          sharePct: 0,
+        };
+      }
+    }
+
+    if (topGame && totalTwoWeekMinutes > 0) {
+      topGame.sharePct = Math.round((topGame.minutes / totalTwoWeekMinutes) * 100);
+    }
+
+    return { totalTwoWeekMinutes, totalTwoWeekHours, gamesPlayed, topGame };
+  }
+
+  function escapeHtml(input: string): string {
+    return input
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  async function loadSteamFeed() {
+    const widget = document.querySelector<HTMLElement>('.steam-widget');
+    if (!widget) return;
+
+    const steamId = widget.dataset.steamId || '';
+    const proxyUrl = widget.dataset.proxyUrl || '';
+    const blockedIds: number[] = JSON.parse(widget.dataset.blockedAppids || '[]');
+    const blockedWords: string[] = JSON.parse(widget.dataset.blockedWords || '[]');
+
+    const loadingEl = document.getElementById('steam-loading');
+    const errorEl = document.getElementById('steam-error');
+    const nowEl = document.getElementById('steam-now');
+    const metricsEl = document.getElementById('steam-metrics');
+    const listEl = document.getElementById('steam-list');
+    const userEl = document.getElementById('steam-user');
+    if (!loadingEl || !errorEl || !nowEl || !metricsEl || !listEl || !userEl) return;
+
+    loadingEl.hidden = false;
+    errorEl.hidden = true;
+    nowEl.hidden = true;
+    metricsEl.hidden = true;
+    listEl.hidden = true;
+    nowEl.innerHTML = '';
+    metricsEl.textContent = '';
+    listEl.innerHTML = '';
+
+    if (!steamId || !proxyUrl) {
+      loadingEl.hidden = true;
+      errorEl.hidden = false;
+      errorEl.textContent = 'ERR: set PUBLIC_STEAM_ID + PUBLIC_STEAM_PROXY_URL in .env';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${proxyUrl}?steamId=${encodeURIComponent(steamId)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const json = await res.json();
+      const nowPlaying: SteamGame | null = json?.currentlyPlaying ?? json?.player?.currentGame ?? null;
+      const playerState: number | null =
+        typeof json?.playerState === 'number'
+          ? json.playerState
+          : typeof json?.player?.state?.code === 'number'
+          ? json.player.state.code
+          : null;
+      const recentRaw: SteamGame[] = json?.recentGames ?? json?.recent?.games ?? [];
+      const personaName: string | null = typeof json?.player?.name === 'string' ? json.player.name : null;
+      const profileUrl: string | null = typeof json?.player?.profileUrl === 'string' ? json.player.profileUrl : null;
+
+      const recentFiltered = recentRaw.filter((g) => !isBlocked(g, blockedIds, blockedWords));
+      const recentSorted = recentFiltered
+        .map((game, index) => ({ game, index }))
+        .sort((a, b) => {
+          const byLastPlayed = (b.game.lastPlayedUnix ?? 0) - (a.game.lastPlayedUnix ?? 0);
+          if (byLastPlayed !== 0) return byLastPlayed;
+          // Preserve upstream order when timestamps tie/missing
+          return a.index - b.index;
+        })
+        .map((entry) => entry.game);
+
+      if (personaName) {
+        userEl.textContent = `@${personaName}`;
+      }
+      if (profileUrl) {
+        userEl.setAttribute('href', profileUrl);
+      }
+
+      if (nowPlaying && !isBlocked(nowPlaying, blockedIds, blockedWords)) {
+        nowEl.innerHTML = `
+          <span class="st-label">now playing:</span>
+          <a class="st-now-link" href="${gameUrl(nowPlaying.appid)}" target="_blank" rel="noopener noreferrer">${nowPlaying.name}</a>
+        `;
+      } else {
+        const stateText = playerState === 0 ? 'offline' : 'online (not in-game / hidden)';
+        nowEl.innerHTML = `<span class="st-label">now playing:</span> <span class="st-dim">${stateText}</span>`;
+      }
+
+      const metrics: SteamMetrics = json?.metrics ?? computeMetrics(recentSorted);
+      if (metrics.gamesPlayed > 0) {
+        const topGameName = metrics.topGame ? escapeHtml(metrics.topGame.name) : 'n/a';
+        const topGameShare = metrics.topGame ? `${metrics.topGame.sharePct}%` : '-';
+        metricsEl.innerHTML = `
+          <span class="st-metrics-line">2w: ${metrics.totalTwoWeekHours}h across ${metrics.gamesPlayed} games</span>
+          <span class="st-focus-line">
+            <span class="st-focus-label">focus:</span>
+            <span class="st-focus-name" title="${topGameName}">${topGameName}</span>
+            <span class="st-focus-share">${topGameShare}</span>
+          </span>
+        `;
+      } else {
+        metricsEl.textContent = '2w: no tracked playtime';
+      }
+
+      for (const game of recentSorted) {
+        const li = document.createElement('li');
+        li.className = 'st-entry';
+        li.innerHTML = `
+          <a class="st-title" href="${gameUrl(game.appid)}" target="_blank" rel="noopener noreferrer">${game.name}</a>
+          <span class="st-meta">2w ${minsToHours(game.playtime_2weeks)} | total ${minsToHours(game.playtime_forever)}</span>
+        `;
+        listEl.appendChild(li);
+      }
+
+      if (recentSorted.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'st-entry';
+        li.innerHTML = `<span class="st-dim">no recent games after filter</span>`;
+        listEl.appendChild(li);
+      }
+
+      loadingEl.hidden = true;
+      nowEl.hidden = false;
+      metricsEl.hidden = false;
+      listEl.hidden = false;
+    } catch {
+      loadingEl.hidden = true;
+      errorEl.hidden = false;
+    }
+  }
+
+  document.addEventListener('astro:page-load', loadSteamFeed);
+</script>
+
+<style is:global>
+  .steam-widget {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+  }
+
+  .steam-widget .widget-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dashed var(--phosphor);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .steam-widget .widget-title {
+    color: var(--phosphor);
+    font-size: 0.85rem;
+  }
+
+  .steam-widget .widget-user {
+    color: var(--phosphor-muted);
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .steam-widget .widget-body {
+    overflow: visible;
+  }
+
+  .steam-widget .st-state {
+    color: var(--phosphor-muted);
+    padding: 0.25rem 0;
+  }
+
+  .steam-widget .st-error {
+    color: #ff7a4a;
+  }
+
+  .steam-widget .blink {
+    animation: al-blink 1s step-end infinite;
+  }
+
+  .steam-widget .st-now {
+    margin-bottom: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .steam-widget .st-label {
+    color: var(--phosphor-dim);
+    text-transform: lowercase;
+    font-size: 0.72rem;
+  }
+
+  .steam-widget .st-now-link,
+  .steam-widget .st-title {
+    color: var(--phosphor);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    display: block;
+  }
+
+  .steam-widget .st-now-link:hover,
+  .steam-widget .st-title:hover {
+    background-color: var(--phosphor);
+    color: var(--bg-color);
+    text-shadow: none;
+    text-decoration: none;
+  }
+
+  .steam-widget .st-list {
+    --st-title-line: 1rem;
+    --st-meta-gap: 0.15rem;
+    --st-meta-line: 0.864rem;
+    --st-entry-pad: 0.45rem;
+    --st-entry-border: 1px;
+    --st-row-height: calc(
+      var(--st-title-line) + var(--st-meta-gap) + var(--st-meta-line) + var(--st-entry-pad) + var(--st-entry-border)
+    );
+    --st-row-gap: 0.55rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--st-row-gap);
+    max-height: calc((var(--st-row-height) * 3) + (var(--st-row-gap) * 2));
+    overflow-y: auto;
+    padding-right: 0.15rem;
+  }
+
+  .steam-widget .st-metrics {
+    color: var(--phosphor-dim);
+    font-size: 0.72rem;
+    margin: 0 0 0.65rem;
+    line-height: 1.25;
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .steam-widget .st-metrics-line {
+    white-space: nowrap;
+  }
+
+  .steam-widget .st-focus-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .steam-widget .st-focus-label {
+    color: var(--phosphor-dim);
+    flex-shrink: 0;
+  }
+
+  .steam-widget .st-focus-name {
+    color: var(--phosphor-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .steam-widget .st-focus-share {
+    color: var(--phosphor);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .steam-widget .st-entry {
+    border-bottom: 1px solid var(--phosphor-border-subtle);
+    padding-bottom: 0.45rem;
+    min-height: var(--st-row-height);
+    box-sizing: border-box;
+  }
+
+  .steam-widget .st-entry:last-child {
+    border-bottom: none;
+  }
+
+  .steam-widget .st-meta,
+  .steam-widget .st-dim {
+    color: var(--phosphor-muted);
+    font-size: 0.72rem;
+    line-height: 1.2;
+    display: block;
+    margin-top: 0.15rem;
+  }
+  </style>

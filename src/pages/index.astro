@@ -2,9 +2,21 @@
 import Terminal from '../layouts/Terminal.astro';
 import BootSequence from '../components/BootSequence.astro';
 import AnilistWidget from '../components/AnilistWidget.astro';
+import SteamWidget from '../components/SteamWidget.astro';
 ---
 
 <Terminal title="~/silky.moe">
 	<BootSequence />
-	<AnilistWidget slot="right-panel" username="Silky777" />
+	<div slot="right-panel" class="right-panel-stack">
+		<AnilistWidget username="Silky777" />
+		<SteamWidget />
+	</div>
 </Terminal>
+
+<style>
+	.right-panel-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+	}
+</style>

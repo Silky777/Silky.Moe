@@ -32,6 +32,9 @@ jobs:
         run: npm install
 
       - name: Build
+        env:
+          PUBLIC_STEAM_BLOCK_APPIDS: 250820
+          PUBLIC_STEAM_BLOCK_WORDS: hentai,nsfw,adult,sex,erotic,lewd
         run: npm run build
 
       - name: Upload artifact

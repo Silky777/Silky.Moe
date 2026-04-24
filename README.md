@@ -1,11 +1,10 @@
 # Silky.Moe
 
-Amber CRT-style personal site built with Astro + Svelte and deployed on GitHub Pages.
+Amber CRT-style personal site built with Astro and deployed on GitHub Pages.
 
 ## Stack
 
 - Astro 5
-- Svelte 5
 - GitHub Pages (GitHub Actions deploy)
 - GoatCounter (visitor count)
 - GPG detached signatures for `system_logs` posts
@@ -38,6 +37,10 @@ Create `.env` from `.env.example`.
 GPG_SIGNING_KEY=C4E88EF0AACBBFDB
 BLOG_SIGNER=silky.moe
 GPG_FINGERPRINT="968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"
+PUBLIC_STEAM_ID=
+PUBLIC_STEAM_PROXY_URL=
+PUBLIC_STEAM_BLOCK_APPIDS=
+PUBLIC_STEAM_BLOCK_WORDS=hentai,nsfw,adult,sex,erotic,lewd
 ```
 
 ### What these do
@@ -45,6 +48,61 @@ GPG_FINGERPRINT="968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"
 - `GPG_SIGNING_KEY`: default key used by `sign-log`
 - `BLOG_SIGNER`: default signer label inserted by `new-log`
 - `GPG_FINGERPRINT`: default fingerprint inserted by `new-log`
+- `PUBLIC_STEAM_ID`: SteamID64 for your profile link / API query
+- `PUBLIC_STEAM_PROXY_URL`: URL to your own Steam proxy endpoint (query param `steamId` is appended)
+- `PUBLIC_STEAM_BLOCK_APPIDS`: optional comma-separated appids to hide
+- `PUBLIC_STEAM_BLOCK_WORDS`: optional comma-separated case-insensitive name filters
+
+### Steam Feed Proxy Contract
+
+The homepage Steam widget calls:
+
+```txt
+GET {PUBLIC_STEAM_PROXY_URL}?steamId={PUBLIC_STEAM_ID}
+```
+
+Expected JSON shape:
+
+```json
+{
+  "currentlyPlaying": { "appid": 730, "name": "Counter-Strike 2" },
+  "recentGames": [
+    { "appid": 730, "name": "Counter-Strike 2", "playtime_2weeks": 420, "playtime_forever": 12000 }
+  ]
+}
+```
+
+Use a proxy so your Steam API key stays private and is never exposed client-side.
+
+### Verbose Cloudflare Worker (Recommended)
+
+A full Worker implementation lives in [workers/steam-integration.js](workers/steam-integration.js).
+
+It returns both the minimal keys the widget needs and a richer payload with:
+
+- player profile + persona state text
+- current game links
+- recent games (enriched URLs and image URLs)
+- owned games summary
+- account level + bans
+- diagnostics for upstream request status/latency
+
+Deploy flow:
+
+1. Create a Worker named `steamintegration`
+2. Paste in [workers/steam-integration.js](workers/steam-integration.js)
+3. Add secret `STEAM_API_KEY`
+4. Deploy
+5. Verify endpoint:
+
+```txt
+https://steamintegration.<yourusername>.workers.dev?steamId=76561198347087564
+```
+
+The homepage widget is backward compatible with both payload styles:
+
+- minimal: `currentlyPlaying`, `recentGames`, `playerState`
+- verbose: `player.currentGame`, `recent.games`, `player.state.code`
 
 ## Publishing Logs
 
