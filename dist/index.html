@@ -1,84 +1,46 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-daut5rek> <head><meta charset="UTF-8"><meta name="description" content="Personal architecture and data logs."><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.18.1"><title>~/silky.moe</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><script data-goatcounter="https://silkymoe.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script><style>.boot[data-boot-sequence]{display:block}.boot[data-boot-sequence] p{margin:0;opacity:0;animation:fade-in .15s forwards}.boot[data-boot-sequence] p+p{margin-top:.15rem}.boot[data-boot-sequence] h2{font-size:1.2rem;font-weight:400;border-bottom:1px solid var(--phosphor);display:inline-block;padding-bottom:.5rem;margin:.5rem 0;opacity:0;animation:fade-in .3s forwards}.boot[data-boot-sequence] .prompt{opacity:0;animation:fade-in .15s forwards}.boot[data-boot-sequence] .spacer{height:.85rem}.boot[data-boot-sequence] .blink{animation:cursor-blink 1s step-end infinite}@keyframes fade-in{to{opacity:1}}@keyframes cursor-blink{0%,to{opacity:1}50%{opacity:0}}
-.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{--bg-color: #0a0805;--phosphor: #ffb000;--phosphor-muted: #e1a33a;--phosphor-dim: #c78d2d;--glow: 0 0 3px rgba(255, 176, 0, .9), 0 0 10px rgba(255, 176, 0, .6), 0 0 20px rgba(255, 176, 0, .3);--font-mono: "JetBrains Mono", "Fira Code", "Courier New", monospace}*{box-sizing:border-box}body{background-color:var(--bg-color);color:var(--phosphor);font-family:var(--font-mono);text-shadow:var(--glow);margin:0;min-height:100vh;overflow-x:hidden;line-height:1.4}body:before{content:"";display:block;position:fixed;inset:0;background:linear-gradient(to bottom,#12101000 50%,#00000040 50%);background-size:100% 4px;z-index:50;pointer-events:none}body:after{content:"";display:block;position:fixed;inset:0;background:radial-gradient(circle,#0000 60%,#000000b3);z-index:51;pointer-events:none}a{color:var(--phosphor);text-decoration:none}a:hover{background-color:var(--phosphor);color:var(--bg-color);text-shadow:none}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[tabindex]:not([tabindex="-1"]):focus-visible{outline:2px solid var(--phosphor);outline-offset:2px;background-color:var(--phosphor);color:var(--bg-color);text-shadow:none}@keyframes flicker{0%,to{opacity:1}92%{opacity:1}93%{opacity:.8}94%{opacity:1}96%{opacity:.9}97%{opacity:1}}body{animation:flicker 8s infinite}hr{border:none;border-top:1px dashed var(--phosphor);opacity:.4;margin:1.5rem 0}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--phosphor);opacity:.5}::selection{background:var(--phosphor);color:var(--bg-color);text-shadow:none}.nav-container[data-astro-cid-gyl5ny2s]{display:flex;flex-direction:column;gap:2rem;height:100%}.sys-header[data-astro-cid-gyl5ny2s] h1[data-astro-cid-gyl5ny2s]{font-size:1rem;font-weight:400;margin:0}.cursor[data-astro-cid-gyl5ny2s]{animation:blink 1s step-end infinite}.version[data-astro-cid-gyl5ny2s]{font-size:.75rem;color:var(--phosphor-muted);margin:.25rem 0 0}.sys-motd[data-astro-cid-gyl5ny2s]{font-size:.85rem;color:var(--phosphor-muted);border:1px dashed var(--phosphor);padding:.75rem;background-color:#0a080599}.sys-motd[data-astro-cid-gyl5ny2s] p[data-astro-cid-gyl5ny2s]{margin:0 0 .25rem}.fingerprint-wrap[data-astro-cid-gyl5ny2s]{margin-top:.5rem;padding-left:.5rem;border-left:2px solid var(--phosphor)}.fp-line[data-astro-cid-gyl5ny2s]{font-size:.7rem;letter-spacing:1px;margin:0!important;line-height:1.2;white-space:nowrap}.directory-list[data-astro-cid-gyl5ny2s] ul[data-astro-cid-gyl5ny2s]{list-style-type:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.5rem}.directory-list[data-astro-cid-gyl5ny2s] a[data-astro-cid-gyl5ny2s]{display:block;padding:.25rem 0;transition:none}@keyframes blink{0%,to{opacity:1}50%{opacity:0}}.sys-status[data-astro-cid-gyl5ny2s]{margin-top:auto;font-size:.75rem;color:var(--phosphor-muted);border-top:1px dashed var(--phosphor);padding-top:1rem;display:flex;flex-direction:column;gap:.2rem}.sys-status[data-astro-cid-gyl5ny2s] p[data-astro-cid-gyl5ny2s]{margin:0}.sys-status[data-astro-cid-gyl5ny2s] .val[data-astro-cid-gyl5ny2s]{opacity:1;color:var(--phosphor)}.terminal-grid[data-astro-cid-daut5rek]{display:grid;grid-template-columns:300px 1fr;min-height:100vh;padding:2rem;gap:2rem;max-width:1400px;margin:0 auto;position:relative;z-index:10}.sidebar[data-astro-cid-daut5rek]{border-right:1px solid var(--phosphor);padding-right:1rem}.data-feed[data-astro-cid-daut5rek]{padding-left:1rem}@media(max-width:768px){.terminal-grid[data-astro-cid-daut5rek]{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar[data-astro-cid-daut5rek]{border-right:none;border-bottom:1px solid var(--phosphor);padding-bottom:1rem}}
-</style></head> <body data-astro-cid-daut5rek> <div class="terminal-grid" data-astro-cid-daut5rek> <aside class="sidebar" data-astro-cid-daut5rek> <div class="nav-container" data-astro-cid-gyl5ny2s> <div class="sys-header" data-astro-cid-gyl5ny2s> <h1 data-astro-cid-gyl5ny2s><span class="user" data-astro-cid-gyl5ny2s>guest@sys</span>:<span class="path" data-astro-cid-gyl5ny2s>~</span>$ cd silky.moe<span class="cursor" data-astro-cid-gyl5ny2s>_</span></h1> <p class="version" data-astro-cid-gyl5ny2s>v1.25</p> </div> <div class="sys-motd" data-astro-cid-gyl5ny2s> <p data-astro-cid-gyl5ny2s>> SYSTEM STATUS: [ONLINE]</p> <p data-astro-cid-gyl5ny2s>> PGP_MASTER_FP:</p> <div class="fingerprint-wrap" data-astro-cid-gyl5ny2s> <p class="fp-line" data-astro-cid-gyl5ny2s>968F 9FE9 CA23 9F0B 3E0E</p> <p class="fp-line" data-astro-cid-gyl5ny2s>4F5D C4E8 8EF0 AACB BFDB</p> </div> </div> <nav class="directory-list" data-astro-cid-gyl5ny2s> <ul data-astro-cid-gyl5ny2s> <li data-astro-cid-gyl5ny2s><a href="/" data-astro-cid-gyl5ny2s>./root</a></li> <li data-astro-cid-gyl5ny2s><a href="/about" data-astro-cid-gyl5ny2s>./about_me</a></li> <li data-astro-cid-gyl5ny2s><a href="/logs" data-astro-cid-gyl5ny2s>./system_logs/</a></li> <li data-astro-cid-gyl5ny2s><a href="/infrastructure" data-astro-cid-gyl5ny2s>./infrastructure/</a></li> <li data-astro-cid-gyl5ny2s><a href="/media" data-astro-cid-gyl5ny2s>./media_cache/</a></li> <li data-astro-cid-gyl5ny2s><a href="/pgp_public.asc" target="_blank" data-astro-cid-gyl5ny2s>./public_key.asc</a></li> </ul> </nav> <div class="sys-status" data-astro-cid-gyl5ny2s> <p data-astro-cid-gyl5ny2s>> SYS_CLOCK: <span class="val" id="sys-clock" data-astro-cid-gyl5ny2s>00:00:00</span></p> <p data-astro-cid-gyl5ny2s>> UPTIME: <span class="val" id="sys-uptime" data-astro-cid-gyl5ny2s>0d 0h 0m</span></p> <p data-astro-cid-gyl5ny2s>> LOAD_AVG: <span class="val" data-astro-cid-gyl5ny2s>0.42 0.37 0.31</span></p> <p data-astro-cid-gyl5ny2s>> SESSIONS: <span class="val" data-astro-cid-gyl5ny2s>1 active</span> (<span class="val" data-astro-cid-gyl5ny2s>68</span> historic)</p> </div> </div> <script>(function(){const deployEpoch = "2026-04-15T16:23:00Z";
-
-  const clockEl = document.getElementById('sys-clock');
-  const uptimeEl = document.getElementById('sys-uptime');
-  const deployTime = new Date(deployEpoch).getTime();
-
-  function tick() {
-    const now = new Date();
-    if (clockEl) {
-      clockEl.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+<!DOCTYPE html><html lang="en" data-astro-cid-daut5rek> <head><meta charset="UTF-8"><meta name="description" content="Personal architecture and data logs."><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.18.1"><title>~/silky.moe</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><script data-goatcounter="https://silkymoe.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script><!-- Restore high-contrast preference before first paint to prevent flash --><script>
+			if (localStorage.getItem('high-contrast') === '1') {
+				document.documentElement.classList.add('high-contrast');
+			}
+		</script><link rel="stylesheet" href="/_astro/index.CHixvLfE.css">
+<link rel="stylesheet" href="/_astro/about.yYUMKRBR.css"></head> <body data-astro-cid-daut5rek> <div class="terminal-grid has-right-panel" data-astro-cid-daut5rek> <aside class="sidebar" data-astro-cid-daut5rek> <div class="nav-container" data-astro-cid-gyl5ny2s> <div class="sys-header" data-astro-cid-gyl5ny2s> <h1 data-astro-cid-gyl5ny2s><span class="user" data-astro-cid-gyl5ny2s>guest@sys</span>:<span class="path" data-astro-cid-gyl5ny2s>~</span>$ cd silky.moe<span class="cursor" data-astro-cid-gyl5ny2s>_</span></h1> <p class="version" data-astro-cid-gyl5ny2s>v1.33</p> </div> <div class="sys-motd" data-astro-cid-gyl5ny2s> <p data-astro-cid-gyl5ny2s>> SYSTEM STATUS: <a class="status-link" href="/status" data-astro-cid-gyl5ny2s>[ONLINE]</a></p> <p data-astro-cid-gyl5ny2s>> PGP_MASTER_FP:</p> <div class="fingerprint-wrap" data-astro-cid-gyl5ny2s> <p class="fp-line" data-astro-cid-gyl5ny2s>968F 9FE9 CA23 9F0B 3E0E</p> <p class="fp-line" data-astro-cid-gyl5ny2s>4F5D C4E8 8EF0 AACB BFDB</p> </div> </div> <nav class="directory-list" data-astro-cid-gyl5ny2s> <ul data-astro-cid-gyl5ny2s> <li data-astro-cid-gyl5ny2s><a href="/" data-astro-cid-gyl5ny2s>./root</a></li> <li data-astro-cid-gyl5ny2s><a href="/about" data-astro-cid-gyl5ny2s>./about_me</a></li> <li data-astro-cid-gyl5ny2s><a href="/logs" data-astro-cid-gyl5ny2s>./system_logs/</a></li> <li data-astro-cid-gyl5ny2s><a href="/infrastructure" data-astro-cid-gyl5ny2s>./infrastructure/</a></li> <li data-astro-cid-gyl5ny2s><a href="/media" data-astro-cid-gyl5ny2s>./media_cache/</a></li> <li data-astro-cid-gyl5ny2s><a href="/pgp_public.asc" target="_blank" data-astro-cid-gyl5ny2s>./public_key.asc</a></li> </ul> </nav> <div class="sys-status" data-astro-cid-gyl5ny2s> <p data-astro-cid-gyl5ny2s>> SYS_CLOCK: <span class="val" id="sys-clock" data-astro-cid-gyl5ny2s>00:00:00</span></p> <p data-astro-cid-gyl5ny2s>> UPTIME: <span class="val" id="sys-uptime" data-astro-cid-gyl5ny2s>0d 0h 0m</span></p> <p data-astro-cid-gyl5ny2s>> LOAD_AVG: <span class="val" data-astro-cid-gyl5ny2s>0.42 0.37 0.31</span></p> <p data-astro-cid-gyl5ny2s>> SESSIONS: <span class="val" data-astro-cid-gyl5ny2s>1 active</span> (<span class="val" data-astro-cid-gyl5ny2s>81</span> historic)</p> <p data-astro-cid-gyl5ny2s>> CONTRAST_MODE: <button id="contrast-toggle" class="contrast-btn" aria-label="Toggle high contrast mode" title="Switch between standard and high contrast display" data-astro-cid-gyl5ny2s>[STANDARD]</button></p> </div> </div> <script type="module">const i=new Date("2026-04-15T16:23:00Z").getTime();let o=null;function c(){const e=document.getElementById("sys-clock"),t=document.getElementById("sys-uptime");if(!e||!t)return;e.textContent=new Date().toLocaleTimeString("en-GB",{hour12:!1});const n=Date.now()-i,s=Math.floor(n/864e5),a=Math.floor(n%864e5/36e5),l=Math.floor(n%36e5/6e4);t.textContent=`${s}d ${a}h ${l}m`}function d(){o&&clearInterval(o),c(),o=setInterval(c,1e3)}function m(e){document.documentElement.classList.toggle("high-contrast",e);const t=document.getElementById("contrast-toggle");t&&(t.textContent=e?"[HIGH]":"[STANDARD]")}document.addEventListener("astro:after-swap",()=>{localStorage.getItem("high-contrast")==="1"&&document.documentElement.classList.add("high-contrast")});document.addEventListener("astro:page-load",()=>{d();const e=document.documentElement.classList.contains("high-contrast"),t=document.getElementById("contrast-toggle");t&&(t.textContent=e?"[HIGH]":"[STANDARD]",t.addEventListener("click",()=>{const n=!document.documentElement.classList.contains("high-contrast");localStorage.setItem("high-contrast",n?"1":"0"),m(n)}))});</script>  </aside> <main class="data-feed" data-astro-cid-daut5rek>  <section class="boot" data-boot-sequence data-lines="[{&#34;text&#34;:&#34;> [SYS_INIT] Initializing environment...&#34;,&#34;delay&#34;:0},{&#34;text&#34;:&#34;> [OK] Kernel modules loaded.&#34;,&#34;delay&#34;:100},{&#34;text&#34;:&#34;> [OK] Memory allocation successful.&#34;,&#34;delay&#34;:200},{&#34;text&#34;:&#34;> [OK] Connecting to main grid...&#34;,&#34;delay&#34;:350},{&#34;text&#34;:&#34;> [OK] Secure channel established.&#34;,&#34;delay&#34;:500},{&#34;text&#34;:&#34;> [OK] Filesystem mounted: /home/silky&#34;,&#34;delay&#34;:650},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:800},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:850},{&#34;text&#34;:&#34;SYSTEM DIRECTORY OVERRIDE ACTIVE&#34;,&#34;type&#34;:&#34;header&#34;,&#34;delay&#34;:900},{&#34;text&#34;:&#34;> Welcome to the main console.&#34;,&#34;delay&#34;:1050},{&#34;text&#34;:&#34;> Type a directory from the sidebar to navigate.&#34;,&#34;delay&#34;:1200},{&#34;text&#34;:&#34;> Last login: __LAST_LOGIN__&#34;,&#34;delay&#34;:1350},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:1450},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:1500},{&#34;text&#34;:&#34;> Awaiting input...&#34;,&#34;type&#34;:&#34;prompt&#34;,&#34;delay&#34;:1550}]"></section> <script type="module">let r=[];function p(){r.forEach(o=>clearTimeout(o)),r=[];const n=document.querySelector("[data-boot-sequence]");n&&(n.innerHTML="")}function u(){const n=document.querySelector("[data-boot-sequence]");if(!n)return;const o=n.getAttribute("data-lines");if(!o)return;const c=JSON.parse(o),s=t=>{if(t.type==="header"){const e=document.createElement("h2");e.textContent=t.text,n.appendChild(e);return}if(t.text===""){const e=document.createElement("div");e.className="spacer",e.setAttribute("aria-hidden","true"),n.appendChild(e);return}const a=document.createElement("p");t.type==="prompt"&&a.classList.add("prompt");const d=t.text==="> Last login: __LAST_LOGIN__"?`> Last login: ${new Date().toUTCString()}`:t.text;if(a.append(document.createTextNode(d)),t.type==="prompt"){const e=document.createElement("span");e.className="blink",e.textContent="_",a.append(e)}n.appendChild(a)};c.forEach(t=>{r.push(setTimeout(()=>s(t),t.delay))})}document.addEventListener("astro:before-swap",p);document.addEventListener("astro:page-load",u);</script>    </main> <aside class="right-panel" data-astro-cid-daut5rek> <div class="right-panel-stack" data-astro-cid-j7pv25f6> <div class="anilist-widget" data-username="Silky777"> <div class="widget-titlebar"> <span class="widget-title">&gt; ANILIST_FEED</span> <a class="widget-user" href="https://anilist.co/user/Silky777" target="_blank" rel="noopener noreferrer">@Silky777</a> </div> <div class="widget-body"> <div id="anilist-loading" class="al-state">
+fetching activity...<span class="blink">_</span> </div> <div id="anilist-error" class="al-state al-error" hidden>
+ERR: failed to reach anilist.co
+</div> <ul id="anilist-list" class="al-list" hidden aria-label="Recent AniList activity"></ul> </div> </div> <script type="module">const h=`
+    query {
+      Page(perPage: 20) {
+        activities(userId: 6989389, sort: ID_DESC) {
+          ... on ListActivity {
+            id
+            status
+            progress
+            createdAt
+            media {
+              title { romaji english }
+              type
+              siteUrl
+            }
+          }
+        }
+      }
     }
-
-    const diff = Date.now() - deployTime;
-    const days = Math.floor(diff / 86400000);
-    const hrs = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-
-    if (uptimeEl) {
-      uptimeEl.textContent = `${days}d ${hrs}h ${mins}m`;
-    }
-  }
-
-  tick();
-  setInterval(tick, 1000);
-})();</script>  </aside> <main class="data-feed" data-astro-cid-daut5rek>  <section class="boot" data-boot-sequence data-lines="[{&#34;text&#34;:&#34;> [SYS_INIT] Initializing environment...&#34;,&#34;delay&#34;:0},{&#34;text&#34;:&#34;> [OK] Kernel modules loaded.&#34;,&#34;delay&#34;:100},{&#34;text&#34;:&#34;> [OK] Memory allocation successful.&#34;,&#34;delay&#34;:200},{&#34;text&#34;:&#34;> [OK] Connecting to main grid...&#34;,&#34;delay&#34;:350},{&#34;text&#34;:&#34;> [OK] Secure channel established.&#34;,&#34;delay&#34;:500},{&#34;text&#34;:&#34;> [OK] Filesystem mounted: /home/silky&#34;,&#34;delay&#34;:650},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:800},{&#34;text&#34;:&#34;SYSTEM DIRECTORY OVERRIDE ACTIVE&#34;,&#34;type&#34;:&#34;header&#34;,&#34;delay&#34;:900},{&#34;text&#34;:&#34;> Welcome to the main console.&#34;,&#34;delay&#34;:1050},{&#34;text&#34;:&#34;> Type a directory from the sidebar to navigate.&#34;,&#34;delay&#34;:1200},{&#34;text&#34;:&#34;> Last login: __LAST_LOGIN__&#34;,&#34;delay&#34;:1350},{&#34;text&#34;:&#34;&#34;,&#34;delay&#34;:1450},{&#34;text&#34;:&#34;> Awaiting input...&#34;,&#34;type&#34;:&#34;prompt&#34;,&#34;delay&#34;:1550}]"></section> <script>
-  (() => {
-    const boot = document.querySelector('[data-boot-sequence]');
-    if (!boot) return;
-
-    const rawLines = boot.getAttribute('data-lines');
-    if (!rawLines) return;
-
-    const lines = JSON.parse(rawLines);
-    const timers = [];
-
-    const renderLine = (line) => {
-      if (line.type === 'header') {
-        const heading = document.createElement('h2');
-        heading.textContent = line.text;
-        boot.appendChild(heading);
-        return;
-      }
-
-      if (line.text === '') {
-        const spacer = document.createElement('div');
-        spacer.className = 'spacer';
-        spacer.setAttribute('aria-hidden', 'true');
-        boot.appendChild(spacer);
-        return;
-      }
-
-      const paragraph = document.createElement('p');
-
-      if (line.type === 'prompt') {
-        paragraph.classList.add('prompt');
-      }
-
-      const text = line.text === '> Last login: __LAST_LOGIN__'
-        ? `> Last login: ${new Date().toUTCString()}`
-        : line.text;
-
-      paragraph.append(document.createTextNode(text));
-
-      if (line.type === 'prompt') {
-        const cursor = document.createElement('span');
-        cursor.className = 'blink';
-        cursor.textContent = '_';
-        paragraph.append(cursor);
-      }
-
-      boot.appendChild(paragraph);
-    };
-
-    lines.forEach((line) => {
-      timers.push(window.setTimeout(() => renderLine(line), line.delay));
-    });
-
-    window.addEventListener('pagehide', () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-    }, { once: true });
-  })();
-</script>   </main> </div> </body></html>
+  `;function f(t){const e=Math.floor(Date.now()/1e3)-t;return e<60?`${e}s ago`:e<3600?`${Math.floor(e/60)}m ago`:e<86400?`${Math.floor(e/3600)}h ago`:`${Math.floor(e/86400)}d ago`}function u(t,e,a){const i=a.type==="ANIME"?"ep":"ch";return t==="completed"?"completed":t==="rewatched episode"?`rewatched ep ${e}`:t==="watched episode"?`watched ep ${e}`:t==="read chapter"?`read ch ${e}`:t==="plans to watch"||t==="plans to read"?t:e?`${t} ${i} ${e}`:t}async function m(){const t=document.querySelector(".anilist-widget");if(!t)return;t.dataset.username;const e=document.getElementById("anilist-loading"),a=document.getElementById("anilist-error"),i=document.getElementById("anilist-list");if(!(!e||!a||!i)){e.hidden=!1,a.hidden=!0,i.hidden=!0,i.innerHTML="";try{const r=await fetch("https://graphql.anilist.co",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({query:h})});if(!r.ok)throw new Error(`HTTP ${r.status}`);const s=((await r.json())?.data?.Page?.activities??[]).filter(n=>n.media);if(s.length===0){e.hidden=!0,a.hidden=!1,a.textContent="ERR: no activity found for this user";return}for(const n of s){const d=n.media.title.english||n.media.title.romaji,l=n.media.type==="ANIME"?"[A]":"[M]",c=u(n.status,n.progress,n.media),p=f(n.createdAt),o=document.createElement("li");o.className="al-entry",o.innerHTML=`
+          <span class="al-type">${l}</span>
+          <span class="al-body">
+            <a class="al-title" href="${n.media.siteUrl}" target="_blank" rel="noopener noreferrer">${d}</a>
+            <span class="al-meta"><span class="al-status">${c}</span><span class="al-time">${p}</span></span>
+          </span>
+        `,i.appendChild(o)}e.hidden=!0,i.hidden=!1}catch{e.hidden=!0,a.hidden=!1}}}document.addEventListener("astro:page-load",m);</script>  <div class="steam-widget" data-steam-id="76561198347087564" data-proxy-url="https://steamintegration.vitaleriktts.workers.dev" data-blocked-appids="[250820]" data-blocked-words="[&#34;hentai&#34;,&#34;nsfw&#34;,&#34;adult&#34;,&#34;sex&#34;,&#34;erotic&#34;,&#34;lewd&#34;]"> <div class="widget-titlebar"> <span class="widget-title">&gt; STEAM_ACTIVITY</span> <a id="steam-user" class="widget-user" href="https://steamcommunity.com/profiles/76561198347087564" target="_blank" rel="noopener noreferrer"> @profile </a> </div> <div class="widget-body"> <div id="steam-loading" class="st-state">fetching steam data...<span class="blink">_</span></div> <div id="steam-error" class="st-state st-error" hidden>ERR: failed to reach steam feed</div> <div id="steam-now" class="st-now" hidden></div> <div id="steam-metrics" class="st-metrics" hidden></div> <ul id="steam-list" class="st-list" hidden aria-label="Recent Steam activity"></ul> </div> </div> <script type="module">function k(t){return!t||t<=0?"0h":`${(t/60).toFixed(t>=120?0:1)}h`}function T(t){return`https://store.steampowered.com/app/${t}`}function P(t,i,r){const d=t.name.toLowerCase();return i.includes(t.appid)?!0:r.some(a=>d.includes(a))}function x(t){const i=t.length,r=t.reduce((s,o)=>s+(o.playtime_2weeks??0),0),d=Number((r/60).toFixed(r>=120?0:1));let a=null;for(const s of t){const o=s.playtime_2weeks??0;(!a||o>a.minutes)&&(a={appid:s.appid,name:s.name,minutes:o,sharePct:0})}return a&&r>0&&(a.sharePct=Math.round(a.minutes/r*100)),{totalTwoWeekMinutes:r,totalTwoWeekHours:d,gamesPlayed:i,topGame:a}}function L(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}async function H(){const t=document.querySelector(".steam-widget");if(!t)return;const i=t.dataset.steamId||"",r=t.dataset.proxyUrl||"",d=JSON.parse(t.dataset.blockedAppids||"[]"),a=JSON.parse(t.dataset.blockedWords||"[]"),s=document.getElementById("steam-loading"),o=document.getElementById("steam-error"),p=document.getElementById("steam-now"),m=document.getElementById("steam-metrics"),u=document.getElementById("steam-list"),y=document.getElementById("steam-user");if(!(!s||!o||!p||!m||!u||!y)){if(s.hidden=!1,o.hidden=!0,p.hidden=!0,m.hidden=!0,u.hidden=!0,p.innerHTML="",m.textContent="",u.innerHTML="",!i||!r){s.hidden=!0,o.hidden=!1,o.textContent="ERR: set PUBLIC_STEAM_ID + PUBLIC_STEAM_PROXY_URL in .env";return}try{const g=await fetch(`${r}?steamId=${encodeURIComponent(i)}`);if(!g.ok)throw new Error(`HTTP ${g.status}`);const n=await g.json(),f=n?.currentlyPlaying??n?.player?.currentGame??null,I=typeof n?.playerState=="number"?n.playerState:typeof n?.player?.state?.code=="number"?n.player.state.code:null,b=n?.recentGames??n?.recent?.games??[],w=typeof n?.player?.name=="string"?n.player.name:null,E=typeof n?.player?.profileUrl=="string"?n.player.profileUrl:null,h=b.filter(e=>!P(e,d,a)).map((e,l)=>({game:e,index:l})).sort((e,l)=>{const $=(l.game.lastPlayedUnix??0)-(e.game.lastPlayedUnix??0);return $!==0?$:e.index-l.index}).map(e=>e.game);if(w&&(y.textContent=`@${w}`),E&&y.setAttribute("href",E),f&&!P(f,d,a))p.innerHTML=`
+          <span class="st-label">now playing:</span>
+          <a class="st-now-link" href="${T(f.appid)}" target="_blank" rel="noopener noreferrer">${f.name}</a>
+        `;else{const e=I===0?"offline":"online (not in-game / hidden)";p.innerHTML=`<span class="st-label">now playing:</span> <span class="st-dim">${e}</span>`}const c=n?.metrics??x(h);if(c.gamesPlayed>0){const e=c.topGame?L(c.topGame.name):"n/a",l=c.topGame?`${c.topGame.sharePct}%`:"-";m.innerHTML=`
+          <span class="st-metrics-line">2w: ${c.totalTwoWeekHours}h across ${c.gamesPlayed} games</span>
+          <span class="st-focus-line">
+            <span class="st-focus-label">focus:</span>
+            <span class="st-focus-name" title="${e}">${e}</span>
+            <span class="st-focus-share">${l}</span>
+          </span>
+        `}else m.textContent="2w: no tracked playtime";for(const e of h){const l=document.createElement("li");l.className="st-entry",l.innerHTML=`
+          <a class="st-title" href="${T(e.appid)}" target="_blank" rel="noopener noreferrer">${e.name}</a>
+          <span class="st-meta">2w ${k(e.playtime_2weeks)} | total ${k(e.playtime_forever)}</span>
+        `,u.appendChild(l)}if(h.length===0){const e=document.createElement("li");e.className="st-entry",e.innerHTML='<span class="st-dim">no recent games after filter</span>',u.appendChild(e)}s.hidden=!0,p.hidden=!1,m.hidden=!1,u.hidden=!1}catch{s.hidden=!0,o.hidden=!1}}}document.addEventListener("astro:page-load",H);</script>  </div> </aside> </div> </body></html> 

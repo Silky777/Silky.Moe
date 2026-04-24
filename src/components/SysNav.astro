@@ -14,7 +14,7 @@ const { version = '0', hits = '---' } = Astro.props;
   </div>
 
   <div class="sys-motd">
-    <p>> SYSTEM STATUS: [ONLINE]</p>
+    <p>> SYSTEM STATUS: <a class="status-link" href="/status">[ONLINE]</a></p>
     <p>> PGP_MASTER_FP:</p>
     <div class="fingerprint-wrap">
       <p class="fp-line">968F 9FE9 CA23 9F0B 3E0E</p>
@@ -132,6 +132,10 @@ const { version = '0', hits = '---' } = Astro.props;
 
   .sys-motd p {
     margin: 0 0 0.25rem 0;
+  }
+
+  .status-link {
+    border-bottom: 1px dashed var(--phosphor);
   }
 
   .fingerprint-wrap {

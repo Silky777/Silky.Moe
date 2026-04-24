@@ -1,0 +1,203 @@
+---
+import Terminal from '../layouts/Terminal.astro';
+import { getCollection } from 'astro:content';
+import { getSignatureStatus } from '../lib/signature-status';
+import { execSync } from 'node:child_process';
+
+function fmtIso(input: Date): string {
+  return input.toISOString().replace('T', ' ').replace('Z', ' UTC');
+}
+
+function getGitShortSha(): string {
+  try {
+    return execSync('git rev-parse --short HEAD').toString().trim();
+  } catch {
+    return 'unknown';
+  }
+}
+
+type ProbeResult = {
+  label: string;
+  state: 'online' | 'degraded' | 'unknown';
+  detail: string;
+};
+
+async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 3500) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function probeGoatCounter(): Promise<ProbeResult> {
+  try {
+    const res = await fetchWithTimeout('https://silkymoe.goatcounter.com/counter/%2F.json', {}, 2500);
+    if (!res.ok) {
+      return { label: 'goatcounter', state: 'degraded', detail: `HTTP ${res.status}` };
+    }
+    return { label: 'goatcounter', state: 'online', detail: 'counter endpoint reachable' };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'request failed';
+    return { label: 'goatcounter', state: 'degraded', detail: message };
+  }
+}
+
+async function probeAniList(): Promise<ProbeResult> {
+  try {
+    const res = await fetchWithTimeout(
+      'https://graphql.anilist.co',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: 'query{__typename}' }),
+      },
+      3000
+    );
+
+    if (!res.ok) {
+      return { label: 'anilist', state: 'degraded', detail: `HTTP ${res.status}` };
+    }
+
+    return { label: 'anilist', state: 'online', detail: 'graphql endpoint reachable' };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'request failed';
+    return { label: 'anilist', state: 'degraded', detail: message };
+  }
+}
+
+async function probeSteamProxy(): Promise<ProbeResult> {
+  const proxy = import.meta.env.PUBLIC_STEAM_PROXY_URL;
+  const steamId = import.meta.env.PUBLIC_STEAM_ID;
+
+  if (!proxy || !steamId) {
+    return { label: 'steam_proxy', state: 'unknown', detail: 'missing PUBLIC_STEAM_PROXY_URL or PUBLIC_STEAM_ID' };
+  }
+
+  const sep = proxy.includes('?') ? '&' : '?';
+  const url = `${proxy}${sep}steamId=${encodeURIComponent(steamId)}`;
+
+  try {
+    const res = await fetchWithTimeout(url, {}, 3500);
+    if (!res.ok) {
+      return { label: 'steam_proxy', state: 'degraded', detail: `HTTP ${res.status}` };
+    }
+
+    return { label: 'steam_proxy', state: 'online', detail: 'proxy endpoint reachable' };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'request failed';
+    return { label: 'steam_proxy', state: 'degraded', detail: message };
+  }
+}
+
+const buildTimestamp = new Date();
+const gitSha = getGitShortSha();
+
+const logs = await getCollection('logs');
+const signedCount = logs.filter((entry) => getSignatureStatus(entry).label === 'signed').length;
+const unsignedCount = logs.length - signedCount;
+
+const probes = await Promise.all([probeGoatCounter(), probeAniList(), probeSteamProxy()]);
+const degradedCount = probes.filter((p) => p.state === 'degraded').length;
+
+const overall = degradedCount === 0 ? 'ONLINE' : 'DEGRADED';
+---
+
+<Terminal title="~/status">
+  <section class="status-page">
+    <p class="label">&gt; cat /proc/site_status</p>
+
+    <div class="panel">
+      <p>&gt; OVERALL: <span class={`state ${overall === 'ONLINE' ? 'ok' : 'warn'}`}>{overall}</span></p>
+      <p>&gt; SNAPSHOT_AT: <span class="value">{fmtIso(buildTimestamp)}</span></p>
+      <p>&gt; BUILD_SHA: <span class="value">{gitSha}</span></p>
+      <p>&gt; NOTE: <span class="value">This page is a build-time snapshot.</span></p>
+    </div>
+
+    <div class="panel">
+      <p class="subhead">&gt; FEED_DEPENDENCIES:</p>
+      <ul>
+        {probes.map((probe) => (
+          <li>
+            <span class={`state ${probe.state === 'online' ? 'ok' : probe.state === 'unknown' ? 'dim' : 'warn'}`}>
+              [{probe.state.toUpperCase()}]
+            </span>
+            <span class="service"> {probe.label}</span>
+            <span class="detail"> - {probe.detail}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="panel">
+      <p class="subhead">&gt; LOG_SIGNATURE_COVERAGE:</p>
+      <p>&gt; total_logs: <span class="value">{logs.length}</span></p>
+      <p>&gt; signed: <span class="value">{signedCount}</span></p>
+      <p>&gt; unsigned: <span class={`value ${unsignedCount > 0 ? 'warn' : ''}`}>{unsignedCount}</span></p>
+    </div>
+  </section>
+</Terminal>
+
+<style>
+  .status-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .label {
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  .panel {
+    border: 1px dashed var(--phosphor);
+    background: rgba(10, 8, 5, 0.5);
+    padding: 0.8rem;
+  }
+
+  .panel p {
+    margin: 0.2rem 0;
+  }
+
+  .subhead {
+    opacity: 0.85;
+    margin-bottom: 0.4rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .state.ok {
+    color: var(--phosphor);
+  }
+
+  .state.warn,
+  .value.warn {
+    color: #ff7a4a;
+  }
+
+  .state.dim {
+    color: var(--phosphor-dim);
+  }
+
+  .service {
+    color: var(--phosphor);
+  }
+
+  .detail {
+    color: var(--phosphor-muted);
+  }
+
+  .value {
+    color: var(--phosphor);
+  }
+</style>

@@ -1,0 +1,142 @@
+---
+import Terminal from '../layouts/Terminal.astro';
+
+type ButtonLink = {
+  name: string;
+  siteUrl: string;
+  buttonUrl?: string;
+  note?: string;
+};
+
+const buttonLinks: ButtonLink[] = [
+  {
+    name: 'Silky.Moe',
+    siteUrl: 'https://silky.moe',
+    note: 'local node',
+  },
+  {
+    name: 'Add your first swap here',
+    siteUrl: 'https://example.com',
+    note: 'edit src/pages/buttons.astro',
+  },
+];
+---
+
+<Terminal title="~/web_buttons">
+  <section class="buttons-page">
+    <p class="label">&gt; ls /webring/buttons</p>
+
+    <div class="buttons-grid" role="list" aria-label="Linked site buttons">
+      {buttonLinks.map((entry) => (
+        <a
+          class="button-card"
+          href={entry.siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${entry.name}`}
+          role="listitem"
+        >
+          {entry.buttonUrl ? (
+            <img
+              class="web-button"
+              src={entry.buttonUrl}
+              alt={`${entry.name} 88x31 button`}
+              loading="lazy"
+              width="88"
+              height="31"
+            />
+          ) : (
+            <div class="button-fallback" aria-hidden="true">
+              <span>{entry.name}</span>
+            </div>
+          )}
+          <div class="meta">
+            <span class="name">{entry.name}</span>
+            {entry.note && <span class="note">{entry.note}</span>}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Terminal>
+
+<style>
+  .buttons-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .label {
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  .buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .button-card {
+    border: 1px solid var(--phosphor-border-subtle);
+    background: var(--phosphor-bg-tint);
+    padding: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 62px;
+  }
+
+  .web-button {
+    width: 88px;
+    height: 31px;
+    object-fit: cover;
+    image-rendering: pixelated;
+    border: 1px solid var(--phosphor-border-mid);
+    flex: 0 0 auto;
+  }
+
+  .button-fallback {
+    width: 88px;
+    height: 31px;
+    border: 1px dashed var(--phosphor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0.2rem;
+    font-size: 0.48rem;
+    line-height: 1.1;
+    color: var(--phosphor-muted);
+    flex: 0 0 auto;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .name {
+    color: var(--phosphor);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .note {
+    color: var(--phosphor-dim);
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 640px) {
+    .buttons-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
