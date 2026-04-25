@@ -55,6 +55,14 @@ PUBLIC_STEAM_BLOCK_WORDS=
 - `PUBLIC_STEAM_BLOCK_APPIDS`: optional comma-separated appids to hide
 - `PUBLIC_STEAM_BLOCK_WORDS`: optional comma-separated case-insensitive name filters
 
+### AniList Feed Proxy Contract
+
+The homepage AniList widget calls:
+
+```txt
+GET https://anilistintegration.vitaleriktts.workers.dev
+```
+
 ### Steam Feed Proxy Contract
 
 The homepage Steam widget calls:
@@ -117,6 +125,39 @@ The widget uses these fields directly:
 - live state: `playerState`, `currentlyPlaying`
 - ordering/display: `recentGames[].lastPlayedUnix`
 - summary line: `metrics.totalTwoWeekHours`, `metrics.gamesPlayed`, `metrics.topGame`
+
+### AniList Worker Setup
+
+A Worker implementation lives in [workers/anilist-integration.js](workers/anilist-integration.js).
+
+Deploy flow:
+
+1. Create a KV namespace named `ANILIST_CACHE`
+2. Create a Worker named `anilistintegration`
+3. Paste in [workers/anilist-integration.js](workers/anilist-integration.js)
+4. Add variable `ANILIST_USER_ID=6989389`
+5. Optionally add variable `ANILIST_PER_PAGE=20`
+6. Bind the KV namespace as `ANILIST_CACHE`
+7. Deploy
+8. In GitHub repo secrets, add:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_KV_NAMESPACE_ID`
+
+1. Run the `AniList Fetch Cron` workflow manually once to seed KV
+1. Verify endpoint:
+
+```txt
+https://anilistintegration.<yourusername>.workers.dev
+```
+
+Behavior:
+
+- GitHub Actions refreshes the cached payload hourly
+- The Worker only serves the last successful payload from KV
+- No repo commits or GitHub Pages redeploys are needed for AniList cache updates
+- If KV is empty, the Worker returns `anilist cache cold` until the first successful workflow run
 
 ### Production Filter Behavior
 

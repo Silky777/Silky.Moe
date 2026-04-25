@@ -4,6 +4,8 @@ import { getCollection } from 'astro:content';
 import { getSignatureStatus } from '../lib/signature-status';
 import { execSync } from 'node:child_process';
 
+const ANILIST_PROXY_URL = 'https://anilistintegration.vitaleriktts.workers.dev';
+
 function fmtIso(input: Date): string {
   return input.toISOString().replace('T', ' ').replace('Z', ' UTC');
 }
@@ -45,26 +47,18 @@ async function probeGoatCounter(): Promise<ProbeResult> {
   }
 }
 
-async function probeAniList(): Promise<ProbeResult> {
+async function probeAniListProxy(): Promise<ProbeResult> {
   try {
-    const res = await fetchWithTimeout(
-      'https://graphql.anilist.co',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: 'query{__typename}' }),
-      },
-      3000
-    );
+    const res = await fetchWithTimeout(ANILIST_PROXY_URL, { headers: { Accept: 'application/json' } }, 3000);
 
     if (!res.ok) {
-      return { label: 'anilist', state: 'degraded', detail: `HTTP ${res.status}` };
+      return { label: 'anilist_proxy', state: 'degraded', detail: `HTTP ${res.status}` };
     }
 
-    return { label: 'anilist', state: 'online', detail: 'graphql endpoint reachable' };
+    return { label: 'anilist_proxy', state: 'online', detail: 'worker endpoint reachable' };
   } catch (err) {
     const message = err instanceof Error ? err.message : 'request failed';
-    return { label: 'anilist', state: 'degraded', detail: message };
+    return { label: 'anilist_proxy', state: 'degraded', detail: message };
   }
 }
 
@@ -99,7 +93,7 @@ const logs = await getCollection('logs');
 const signedCount = logs.filter((entry) => getSignatureStatus(entry).label === 'signed').length;
 const unsignedCount = logs.length - signedCount;
 
-const probes = await Promise.all([probeGoatCounter(), probeAniList(), probeSteamProxy()]);
+const probes = await Promise.all([probeGoatCounter(), probeAniListProxy(), probeSteamProxy()]);
 const degradedCount = probes.filter((p) => p.state === 'degraded').length;
 
 const overall = degradedCount === 0 ? 'ONLINE' : 'DEGRADED';

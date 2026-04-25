@@ -3,9 +3,10 @@ interface Props {
   username: string;
 }
 const { username } = Astro.props;
+const proxyUrl = 'https://anilistintegration.vitaleriktts.workers.dev';
 ---
 
-<div class="anilist-widget" data-username={username}>
+<div class="anilist-widget" data-username={username} data-proxy-url={proxyUrl}>
   <div class="widget-titlebar">
     <span class="widget-title">&gt; ANILIST_FEED</span>
     <a class="widget-user" href={`https://anilist.co/user/${username}`} target="_blank" rel="noopener noreferrer">@{username}</a>
@@ -64,6 +65,7 @@ const { username } = Astro.props;
     const widget = document.querySelector<HTMLElement>('.anilist-widget');
     if (!widget) return;
 
+    const proxyUrl = widget.dataset.proxyUrl;
     const loadingEl = document.getElementById('anilist-loading');
     const errorEl = document.getElementById('anilist-error');
     const listEl = document.getElementById('anilist-list');
@@ -76,21 +78,30 @@ const { username } = Astro.props;
 
     try {
       let json;
+
       try {
         const res = await fetch('https://graphql.anilist.co', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
           body: JSON.stringify({ query: QUERY }),
         });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         json = await res.json();
-        if (json.errors) throw new Error('GraphQL returned errors');
-      } catch (err) {
-        console.warn('Failed to fetch live AniList API, falling back to cache:', err);
-        const cacheRes = await fetch('/anilist-cache.json');
-        if (!cacheRes.ok) throw new Error('Failed to load cached AniList data');
-        json = await cacheRes.json();
+        if (json.errors) throw new Error('AniList returned errors');
+      } catch {
+        if (!proxyUrl) throw new Error('AniList proxy not configured');
+
+        const res = await fetch(proxyUrl, {
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        json = await res.json();
+        if (json.errors) throw new Error('AniList proxy returned errors');
       }
 
       const activities: any[] = json?.data?.Page?.activities ?? [];
@@ -124,9 +135,14 @@ const { username } = Astro.props;
 
       loadingEl.hidden = true;
       listEl.hidden = false;
-    } catch {
+    } catch (err) {
       loadingEl.hidden = true;
       errorEl.hidden = false;
+      if (err instanceof Error && err.message === 'AniList proxy not configured') {
+        errorEl.textContent = 'ERR: AniList proxy not configured';
+      } else {
+        errorEl.textContent = 'ERR: AniList feed unavailable';
+      }
     }
   }
 
