@@ -66,10 +66,13 @@ const proxyUrl = 'https://anilistintegration.vitaleriktts.workers.dev';
     if (!widget) return;
 
     const proxyUrl = widget.dataset.proxyUrl;
+    const titleEl = widget.querySelector<HTMLElement>('.widget-title');
     const loadingEl = document.getElementById('anilist-loading');
     const errorEl = document.getElementById('anilist-error');
     const listEl = document.getElementById('anilist-list');
     if (!loadingEl || !errorEl || !listEl) return;
+
+    if (titleEl) titleEl.textContent = '> ANILIST_FEED';
 
     loadingEl.hidden = false;
     errorEl.hidden = true;
@@ -95,6 +98,7 @@ const proxyUrl = 'https://anilistintegration.vitaleriktts.workers.dev';
       } catch {
         if (!proxyUrl) throw new Error('AniList proxy not configured');
 
+        if (titleEl) titleEl.textContent = '> ANILIST_FEED (cold)';
         const res = await fetch(proxyUrl, {
           headers: { Accept: 'application/json' },
         });
