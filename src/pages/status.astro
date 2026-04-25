@@ -47,6 +47,32 @@ async function probeGoatCounter(): Promise<ProbeResult> {
   }
 }
 
+async function probeAniListUpstream(): Promise<ProbeResult> {
+  try {
+    const res = await fetchWithTimeout(
+      'https://graphql.anilist.co',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ query: 'query { Media(id: 1) { id } }' }),
+      },
+      3000
+    );
+
+    if (!res.ok) {
+      return { label: 'anilist_upstream', state: 'degraded', detail: `HTTP ${res.status}` };
+    }
+
+    return { label: 'anilist_upstream', state: 'online', detail: 'graphql endpoint reachable' };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'request failed';
+    return { label: 'anilist_upstream', state: 'degraded', detail: message };
+  }
+}
+
 async function probeAniListProxy(): Promise<ProbeResult> {
   try {
     const res = await fetchWithTimeout(ANILIST_PROXY_URL, { headers: { Accept: 'application/json' } }, 3000);
@@ -93,7 +119,7 @@ const logs = await getCollection('logs');
 const signedCount = logs.filter((entry) => getSignatureStatus(entry).label === 'signed').length;
 const unsignedCount = logs.length - signedCount;
 
-const probes = await Promise.all([probeGoatCounter(), probeAniListProxy(), probeSteamProxy()]);
+const probes = await Promise.all([probeGoatCounter(), probeAniListUpstream(), probeAniListProxy(), probeSteamProxy()]);
 const degradedCount = probes.filter((p) => p.state === 'degraded').length;
 
 const overall = degradedCount === 0 ? 'ONLINE' : 'DEGRADED';
