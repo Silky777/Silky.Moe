@@ -61,6 +61,15 @@ const proxyUrl = 'https://anilistintegration.vitaleriktts.workers.dev';
     return progress ? `${status} ${type} ${progress}` : status;
   }
 
+  function safeAniListUrl(value: string): string | null {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && url.hostname === 'anilist.co' ? url.href : null;
+    } catch {
+      return null;
+    }
+  }
+
   async function loadFeed() {
     const widget = document.querySelector<HTMLElement>('.anilist-widget');
     if (!widget) return;
@@ -127,13 +136,39 @@ const proxyUrl = 'https://anilistintegration.vitaleriktts.workers.dev';
 
         const li = document.createElement('li');
         li.className = 'al-entry';
-        li.innerHTML = `
-          <span class="al-type">${typeTag}</span>
-          <span class="al-body">
-            <a class="al-title" href="${item.media.siteUrl}" target="_blank" rel="noopener noreferrer">${title}</a>
-            <span class="al-meta"><span class="al-status">${line}</span><span class="al-time">${ago}</span></span>
-          </span>
-        `;
+
+        const typeEl = document.createElement('span');
+        typeEl.className = 'al-type';
+        typeEl.textContent = typeTag;
+
+        const bodyEl = document.createElement('span');
+        bodyEl.className = 'al-body';
+
+        const linkEl = document.createElement('a');
+        linkEl.className = 'al-title';
+        const mediaUrl = safeAniListUrl(item.media.siteUrl);
+        if (mediaUrl) {
+          linkEl.href = mediaUrl;
+        } else {
+          linkEl.removeAttribute('href');
+          linkEl.setAttribute('aria-disabled', 'true');
+        }
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener noreferrer';
+        linkEl.textContent = title;
+
+        const metaEl = document.createElement('span');
+        metaEl.className = 'al-meta';
+        const statusEl = document.createElement('span');
+        statusEl.className = 'al-status';
+        statusEl.textContent = line;
+        const timeEl = document.createElement('span');
+        timeEl.className = 'al-time';
+        timeEl.textContent = ago;
+
+        metaEl.append(statusEl, timeEl);
+        bodyEl.append(linkEl, metaEl);
+        li.append(typeEl, bodyEl);
         listEl.appendChild(li);
       }
 

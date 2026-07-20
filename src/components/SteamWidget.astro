@@ -65,6 +65,15 @@ const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,a
     return `https://store.steampowered.com/app/${appid}`;
   }
 
+  function safeUrl(value: string): string | null {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' ? url.href : null;
+    } catch {
+      return null;
+    }
+  }
+
   function isBlocked(game: SteamGame, blockedIds: number[], blockedWords: string[]): boolean {
     const lower = game.name.toLowerCase();
     if (blockedIds.includes(game.appid)) return true;
@@ -139,7 +148,8 @@ const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,a
     }
 
     try {
-      const res = await fetch(`${proxyUrl}?steamId=${encodeURIComponent(steamId)}`);
+      const separator = proxyUrl.includes('?') ? '&' : '?';
+      const res = await fetch(`${proxyUrl}${separator}steamId=${encodeURIComponent(steamId)}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const json = await res.json();
@@ -168,20 +178,32 @@ const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,a
         userEl.textContent = `@${personaName}`;
       }
       if (profileUrl) {
-        userEl.setAttribute('href', profileUrl);
+        const safeProfileUrl = safeUrl(profileUrl);
+        if (safeProfileUrl) userEl.setAttribute('href', safeProfileUrl);
       }
 
       if (nowPlaying && !isBlocked(nowPlaying, blockedIds, blockedWords)) {
-        nowEl.innerHTML = `
-          <span class="st-label">now playing:</span>
-          <a class="st-now-link" href="${gameUrl(nowPlaying.appid)}" target="_blank" rel="noopener noreferrer">${nowPlaying.name}</a>
-        `;
+        const labelEl = document.createElement('span');
+        labelEl.className = 'st-label';
+        labelEl.textContent = 'now playing:';
+        const linkEl = document.createElement('a');
+        linkEl.className = 'st-now-link';
+        linkEl.href = gameUrl(nowPlaying.appid);
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener noreferrer';
+        linkEl.textContent = nowPlaying.name;
+        nowEl.append(labelEl, linkEl);
       } else {
-        const stateText = playerState === 0 ? 'offline' : 'online (not in-game / hidden)';
-        nowEl.innerHTML = `<span class="st-label">now playing:</span> <span class="st-dim">${stateText}</span>`;
+        const labelEl = document.createElement('span');
+        labelEl.className = 'st-label';
+        labelEl.textContent = 'now playing:';
+        const stateEl = document.createElement('span');
+        stateEl.className = 'st-dim';
+        stateEl.textContent = playerState === 0 ? 'offline' : 'online (not in-game / hidden)';
+        nowEl.append(labelEl, stateEl);
       }
 
-      const metrics: SteamMetrics = json?.metrics ?? computeMetrics(recentSorted);
+      const metrics = computeMetrics(recentSorted);
       if (metrics.gamesPlayed > 0) {
         const topGameName = metrics.topGame ? escapeHtml(metrics.topGame.name) : 'n/a';
         const topGameShare = metrics.topGame ? `${metrics.topGame.sharePct}%` : '-';
@@ -200,17 +222,26 @@ const blockedWords = (import.meta.env.PUBLIC_STEAM_BLOCK_WORDS ?? 'hentai,nsfw,a
       for (const game of recentSorted) {
         const li = document.createElement('li');
         li.className = 'st-entry';
-        li.innerHTML = `
-          <a class="st-title" href="${gameUrl(game.appid)}" target="_blank" rel="noopener noreferrer">${game.name}</a>
-          <span class="st-meta">2w ${minsToHours(game.playtime_2weeks)} | total ${minsToHours(game.playtime_forever)}</span>
-        `;
+        const linkEl = document.createElement('a');
+        linkEl.className = 'st-title';
+        linkEl.href = gameUrl(game.appid);
+        linkEl.target = '_blank';
+        linkEl.rel = 'noopener noreferrer';
+        linkEl.textContent = game.name;
+        const metaEl = document.createElement('span');
+        metaEl.className = 'st-meta';
+        metaEl.textContent = `2w ${minsToHours(game.playtime_2weeks)} | total ${minsToHours(game.playtime_forever)}`;
+        li.append(linkEl, metaEl);
         listEl.appendChild(li);
       }
 
       if (recentSorted.length === 0) {
         const li = document.createElement('li');
         li.className = 'st-entry';
-        li.innerHTML = `<span class="st-dim">no recent games after filter</span>`;
+        const messageEl = document.createElement('span');
+        messageEl.className = 'st-dim';
+        messageEl.textContent = 'no recent games after filter';
+        li.append(messageEl);
         listEl.appendChild(li);
       }
 

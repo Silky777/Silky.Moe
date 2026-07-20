@@ -1,5 +1,5 @@
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import type { CollectionEntry } from 'astro:content';
@@ -14,10 +14,11 @@ const cache = new Map<string, SignatureStatus>();
 
 function resolvePublicPath(absolutePathFromPublic: string): string | null {
   const publicRoot = resolve(process.cwd(), 'public');
-  const relative = absolutePathFromPublic.replace(/^\/+/, '');
-  const fullPath = resolve(publicRoot, relative);
+  const requestedPath = absolutePathFromPublic.replace(/^\/+/, '');
+  const fullPath = resolve(publicRoot, requestedPath);
+  const pathFromPublicRoot = relative(publicRoot, fullPath);
 
-  if (!fullPath.startsWith(publicRoot)) {
+  if (isAbsolute(pathFromPublicRoot) || pathFromPublicRoot === '..' || pathFromPublicRoot.startsWith(`..${sep}`)) {
     return null;
   }
 

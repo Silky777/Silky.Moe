@@ -28,12 +28,20 @@ try {
 
 let visitorCount = '---';
 try {
-	const res = await fetch('https://silkymoe.goatcounter.com/counter/%2F.json');
-	if (res.ok) {
-		const data = await res.json();
-		visitorCount = data.count_unique ?? data.count ?? '---';
+	const controller = new AbortController();
+	const timeout = setTimeout(() => controller.abort(), 2500);
+	try {
+		const res = await fetch('https://silkymoe.goatcounter.com/counter/%2F.json', { signal: controller.signal });
+		if (res.ok) {
+			const data = await res.json();
+			visitorCount = data.count_unique ?? data.count ?? '---';
+		}
+	} finally {
+		clearTimeout(timeout);
 	}
-} catch {}
+} catch {
+	// Analytics are optional and must not prevent a static build.
+}
 ---
 
 <!doctype html>
@@ -41,7 +49,7 @@ try {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Personal architecture and data logs." />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
