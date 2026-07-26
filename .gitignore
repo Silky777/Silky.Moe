@@ -3,3 +3,4 @@ dist
 .astro
 .env
 background.md
+.tmp-reader-preview

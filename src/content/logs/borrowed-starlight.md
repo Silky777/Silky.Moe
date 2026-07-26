@@ -1,8 +1,6 @@
 ---
 title: Borrowed Starlight
 pubDate: 2026-07-22T03:59:58Z
-tags:
-  - log
 signature:
   signer: silky.moe
   fingerprint: "968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"

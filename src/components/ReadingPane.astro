@@ -1,0 +1,123 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label = 'LONGFORM' } = Astro.props;
+---
+
+<section class="reading-pane">
+  <div class="reader-chrome" aria-hidden="true">
+    <span>&gt; READER_BUFFER / {label}</span>
+  </div>
+  <div class="reader-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .reading-pane {
+    --reader-bg: #17140f;
+    --reader-bg-raised: #1d1913;
+    --reader-text: #eee6d8;
+    --reader-muted: #bdb3a4;
+    --reader-accent: #c79552;
+    --reader-accent-bright: #e1b879;
+    --reader-border: rgba(225, 184, 121, 0.3);
+
+    position: relative;
+    z-index: 60;
+    isolation: isolate;
+    width: min(100%, 900px);
+    max-width: 100%;
+    margin-inline: auto;
+    overflow: hidden;
+    color: var(--reader-text);
+    background: var(--reader-bg);
+    border: 1px solid var(--reader-border);
+    border-radius: 2px;
+    box-shadow:
+      0 1.5rem 4rem rgba(0, 0, 0, 0.58),
+      0 0 0 1px rgba(0, 0, 0, 0.55);
+    text-shadow: none;
+  }
+
+  .reader-chrome {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.8rem;
+    color: var(--reader-accent);
+    background: #0f0d0a;
+    border-bottom: 1px solid var(--reader-border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .reader-body {
+    padding: clamp(1.25rem, 3.5vw, 2.7rem);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 238, 205, 0.025), transparent 38%),
+      var(--reader-bg);
+    font-family: var(--font-reading);
+    font-size: clamp(1.03rem, 0.35vw + 0.96rem, 1.15rem);
+    line-height: 1.76;
+    letter-spacing: 0.002em;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  .reader-body :global(*) {
+    text-shadow: none;
+  }
+
+  .reader-body :global(a) {
+    color: var(--reader-accent-bright);
+    text-decoration-color: rgba(225, 184, 121, 0.62);
+  }
+
+  .reader-body :global(a:hover) {
+    color: #17140f;
+    background: var(--reader-accent-bright);
+  }
+
+  .reader-body :global(a:focus-visible) {
+    color: #17140f;
+    background: var(--reader-accent-bright);
+    outline-color: var(--reader-accent-bright);
+  }
+
+  .reader-body :global(*)::selection {
+    color: #17140f;
+    background: var(--reader-accent-bright);
+    text-shadow: none;
+  }
+
+  :global(html.high-contrast) .reading-pane {
+    --reader-bg: #111;
+    --reader-bg-raised: #191919;
+    --reader-text: #fff;
+    --reader-muted: #d0d0d0;
+    --reader-accent: #d8d8d8;
+    --reader-accent-bright: #fff;
+    --reader-border: rgba(255, 255, 255, 0.42);
+  }
+
+  @media (max-width: 600px) {
+    .reader-chrome {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.15rem;
+      font-size: 0.66rem;
+    }
+
+    .reader-body {
+      padding: 1.15rem 1rem 1.35rem;
+      font-size: 1rem;
+      line-height: 1.68;
+    }
+  }
+</style>

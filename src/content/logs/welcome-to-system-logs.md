@@ -1,9 +1,6 @@
 ---
 title: Welcome To System Logs
 pubDate: 2026-04-22T13:14:58Z
-tags:
-  - update
-  - infrastructure
 signature:
   signer: silky.moe
   fingerprint: "968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"

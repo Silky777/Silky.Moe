@@ -85,10 +85,10 @@ try {
 		min-height: 100vh;
 		padding: 2rem;
 		gap: 2rem;
+		width: 100%;
 		max-width: 1400px;
 		margin: 0 auto;
 		position: relative;
-		z-index: 10;
 	}
 
 	.terminal-grid.has-right-panel {
@@ -98,6 +98,12 @@ try {
 	.sidebar {
 		border-right: 1px solid var(--phosphor);
 		padding-right: 1rem;
+	}
+
+	.sidebar,
+	.data-feed,
+	.right-panel {
+		min-width: 0;
 	}
 
 	@media (min-width: 769px) {
@@ -123,6 +129,8 @@ try {
 
 	.data-feed {
 		padding-left: 1rem;
+		width: 100%;
+		max-width: 100%;
 	}
 
 	@media (max-width: 768px) {
@@ -130,11 +138,18 @@ try {
 		.terminal-grid.has-right-panel {
 			grid-template-columns: 1fr;
 			grid-template-rows: auto 1fr;
+			gap: 1.25rem;
+			padding: 1rem;
+			max-width: 100%;
 		}
 		.sidebar {
 			border-right: none;
 			border-bottom: 1px solid var(--phosphor);
+			padding-right: 0;
 			padding-bottom: 1rem;
+		}
+		.data-feed {
+			padding-left: 0;
 		}
 		.right-panel {
 			border-left: none;

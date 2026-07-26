@@ -47,8 +47,6 @@ if (!existsSync(targetDir)) {
 const content = `---
 title: ${yamlQuote(rawTitle)}
 pubDate: ${date}
-tags:
-  - log
 signature:
   signer: ${yamlQuote(signer)}
   fingerprint: ${yamlQuote(fingerprint)}

@@ -1,10 +1,6 @@
 ---
 title: "Example Unsigned Post 2 - Fake Signature"
 pubDate: 2026-04-22T13:25:00Z
-tags:
-  - example
-  - unsigned
-  - warning
 signature:
   signer: silky.moe
   fingerprint: "968F 9FE9 CA23 9F0B 3E0E 4F5D C4E8 8EF0 AACB BFDB"

@@ -1,5 +1,6 @@
 ---
 import Terminal from '../../layouts/Terminal.astro';
+import ReadingPane from '../../components/ReadingPane.astro';
 import { getCollection, render } from 'astro:content';
 import { getSignatureStatus } from '../../lib/signature-status';
 
@@ -38,7 +39,7 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
 
 <Terminal title={`~/logs/${entry.slug}`}>
   <article class="log-entry">
-    <header>
+    <header class="terminal-header">
       <p class="back-nav">
         <a class="back-nav-link" href="/logs" aria-label="Back to system logs">
           <span class="back-nav-cmd">cd ../</span>
@@ -46,15 +47,21 @@ const signatureFileName = entry.data.signature?.signatureFile.split('/').pop() ?
         </a>
       </p>
       <p class="label">&gt; cat /system_logs/{entry.slug}.md</p>
-      <h1>{entry.data.title}</h1>
-      <p class="meta">Published {pubDateFmt.format(entry.data.pubDate)}</p>
-      {entry.data.updatedDate && <p class="meta">Updated {pubDateFmt.format(entry.data.updatedDate)}</p>}
-      {entry.data.tags.length > 0 && <p class="meta">Tags: {entry.data.tags.join(', ')}</p>}
     </header>
 
-    <div class="content">
-      <Content />
-    </div>
+    <ReadingPane label={`LOG / ${entry.slug}.md`}>
+      <header class="reader-header">
+        <h1>{entry.data.title}</h1>
+        <div class="reader-meta">
+          <p>Published {pubDateFmt.format(entry.data.pubDate)}</p>
+          {entry.data.updatedDate && <p>Updated {pubDateFmt.format(entry.data.updatedDate)}</p>}
+        </div>
+      </header>
+
+      <div class="content">
+        <Content />
+      </div>
+    </ReadingPane>
 
     {
       entry.data.signature ? (
@@ -102,9 +109,15 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
     gap: 1.25rem;
   }
 
+  .terminal-header {
+    display: flex;
+    flex-direction: column;
+  }
+
   .label {
     margin: 0;
     opacity: 0.75;
+    overflow-wrap: anywhere;
   }
 
   .back-nav {
@@ -132,21 +145,41 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
   }
 
   h1 {
-    margin: 0.5rem 0 0.5rem;
-    font-size: 1.6rem;
+    margin: 0;
+    color: var(--reader-text);
+    font-size: clamp(1.85rem, 4vw, 2.65rem);
+    line-height: 1.14;
+    text-wrap: balance;
   }
 
-  .meta {
-    margin: 0.2rem 0;
-    color: var(--phosphor-dim);
+  .reader-header {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--reader-border);
+    margin-bottom: 1.55rem;
+  }
+
+  .reader-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.1rem;
+    margin-top: 0.8rem;
+    color: var(--reader-muted);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .reader-meta p {
+    margin: 0;
   }
 
   .content :global(p) {
-    margin: 0.8rem 0;
+    margin: 0 0 1.15rem;
+    max-width: 70ch;
   }
 
   .content :global(a) {
-    color: var(--phosphor);
+    color: var(--reader-accent-bright);
     text-decoration: underline;
     text-underline-offset: 0.15em;
     text-decoration-thickness: 1px;
@@ -154,21 +187,50 @@ gpg --verify {signatureFileName} {signedFileName}</pre>
 
   .content :global(h2),
   .content :global(h3) {
-    margin-top: 1.4rem;
-    margin-bottom: 0.6rem;
+    color: var(--reader-text);
+    margin-top: 1.8rem;
+    margin-bottom: 0.7rem;
+    line-height: 1.25;
   }
 
   .content :global(code) {
-    border: 1px dashed var(--phosphor);
+    border: 1px solid var(--reader-border);
     padding: 0.05rem 0.25rem;
-    background: rgba(10, 8, 5, 0.5);
+    color: var(--reader-text);
+    background: var(--reader-bg-raised);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
   }
 
   .content :global(pre) {
-    border: 1px dashed var(--phosphor);
-    padding: 0.8rem;
+    border: 1px solid var(--reader-border);
+    padding: 1rem;
     overflow-x: auto;
-    background: rgba(10, 8, 5, 0.5);
+    color: var(--reader-text);
+    background: var(--reader-bg-raised);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .content :global(blockquote) {
+    margin: 1.4rem 0;
+    padding: 0.15rem 0 0.15rem 1rem;
+    color: var(--reader-muted);
+    border-left: 3px solid var(--reader-accent);
+  }
+
+  .content :global(ul),
+  .content :global(ol) {
+    padding-left: 1.4rem;
+  }
+
+  .content :global(li) {
+    margin: 0.35rem 0;
+  }
+
+  .content > :global(:last-child) {
+    margin-bottom: 0;
   }
 
   .signature-box {

@@ -7,6 +7,7 @@
     0 0 10px rgba(255, 176, 0, 0.6),
     0 0 20px rgba(255, 176, 0, 0.3);
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-reading: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
   --phosphor-border-subtle: rgba(255, 176, 0, 0.35);
   --phosphor-bg-tint: rgba(255, 176, 0, 0.04);
   --phosphor-border-mid: rgba(255, 176, 0, 0.45);
@@ -103,7 +104,7 @@ select:focus-visible,
   97% { opacity: 1; }
 }
 
-body {
+body::before {
   animation: flicker 8s infinite;
 }
 
